@@ -413,20 +413,21 @@ html.light .theme-toggle::after{transform:translateX(16px);}
 <!-- EX 17 -->
 <div class="ex-card" id="ex17">
   <div class="ex-num">Ejercicio 17 · Clasificar por categoría</div>
-  <div class="ex-q">Arrastrá cada frase a su categoría correcta</div>
-  <div class="drag-label">Frases disponibles:</div>
-  <div class="drag-bank" id="dragBank17"></div>
+  <div class="ex-q">Tocá una frase y después tocá la categoría donde pertenece</div>
+  <div class="drag-label" style="margin-bottom:10px">① Elegí una frase:</div>
+  <div id="dragBank17" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px;"></div>
   <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:4px;">
     <div>
       <div class="drag-label">👋 Saludos</div>
-      <div class="drag-target" id="dropSaludos" ondragover="ev.preventDefault();this.classList.add('over')" ondragleave="this.classList.remove('over')" ondrop="handleDrop(event,'Saludos')"></div>
+      <div class="drag-target" id="dropSaludos" onclick="tapDrop('Saludos')" style="cursor:pointer;min-height:60px;"></div>
     </div>
     <div>
       <div class="drag-label">🆘 Emergencias</div>
-      <div class="drag-target" id="dropEmergencias" ondragover="ev.preventDefault();this.classList.add('over')" ondragleave="this.classList.remove('over')" ondrop="handleDrop(event,'Emergencias')"></div>
+      <div class="drag-target" id="dropEmergencias" onclick="tapDrop('Emergencias')" style="cursor:pointer;min-height:60px;"></div>
     </div>
   </div>
   <button class="check-btn" onclick="checkDragDrop(17)" style="margin-top:14px">Verificar</button>
+  <button class="check-btn" style="background:var(--surface3);color:var(--muted);margin-left:8px;margin-top:14px" onclick="resetDrag17()">↺</button>
   <div class="feedback" id="ex17-fb"></div>
 </div>
 
@@ -454,7 +455,7 @@ html.light .theme-toggle::after{transform:translateX(16px);}
 <div class="ex-card" id="ex19">
   <div class="ex-num">Ejercicio 19 · Escuchá y elegí</div>
   <div class="ex-q">Presioná el botón para escuchar la frase. ¿Cuál es su traducción?</div>
-  <button class="audio-btn" id="audioBtn19" onclick="playAudio19()">
+  <button class="audio-btn" id="audioBtn19" onclick="playExAudio('Goedemiddag','audioBtn19')">
     <div class="audio-icon"><svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor"><path d="M3 2.5l9 4.5-9 4.5V2.5z"/></svg></div>
     Escuchar frase
   </button>
@@ -471,7 +472,7 @@ html.light .theme-toggle::after{transform:translateX(16px);}
 <div class="ex-card" id="ex20">
   <div class="ex-num">Ejercicio 20 · Escuchá y elegí</div>
   <div class="ex-q">¿Qué frase estás escuchando?</div>
-  <button class="audio-btn" id="audioBtn20" onclick="playAudio20()">
+  <button class="audio-btn" id="audioBtn20" onclick="playExAudio('Heerlijk','audioBtn20')">
     <div class="audio-icon"><svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor"><path d="M3 2.5l9 4.5-9 4.5V2.5z"/></svg></div>
     Escuchar frase
   </button>
@@ -625,6 +626,7 @@ html.light .theme-toggle::after{transform:translateX(16px);}
   <div class="ex-sub">Tocalas en el orden correcto (1→4)</div>
   <div id="dialogOrder" style="display:flex;flex-direction:column;gap:8px;margin-bottom:14px"></div>
   <button class="check-btn" onclick="checkDialog()">Verificar orden</button>
+  <button class="check-btn" style="background:var(--surface3);color:var(--muted);margin-left:8px" onclick="resetDialog()">↺ Reiniciar</button>
   <div class="feedback" id="ex30-fb"></div>
 </div>
 
@@ -698,36 +700,33 @@ function showFeedback(id, ok, msg) {
   el.innerHTML = (ok ? '✓ ' : '✗ ') + msg;
   document.getElementById(`ex${id}`).classList.toggle('solved', ok);
   document.getElementById(`ex${id}`).classList.toggle('failed', !ok);
-  if (ok) { document.getElementById(`ex${id}`).classList.add('pop'); }
+  if (ok) document.getElementById(`ex${id}`).classList.add('pop');
 }
 
 // ── OPCIÓN MÚLTIPLE ─────────────────────────────────────────────────────────
-function checkMC(id, chosen, correct, extraMsg='') {
+function checkMC(id, chosen, correct) {
   const opts = document.querySelectorAll(`#ex${id}-opts .opt`);
   opts.forEach(b => {
     b.classList.add('disabled');
     if (b.textContent.trim().startsWith(correct)) b.classList.add('correct');
   });
   const ok = chosen === correct;
-  if (!ok) {
-    event.target.classList.remove('disabled');
-    event.target.classList.add('wrong');
-  }
-  const msgs = {
-    27: ok ? '¡Correcto! Jupiler y Stella Artois son las marcas belgas.' : `Falso — Heineken es holandesa. Las belgas son Jupiler y Stella Artois.`,
+  if (!ok) { event.target.classList.remove('disabled'); event.target.classList.add('wrong'); }
+  const extras = {
+    27: ok ? '¡Correcto! Jupiler y Stella Artois son las marcas belgas.'
+           : 'Falso — Heineken es holandesa. Las belgas son Jupiler y Stella Artois.',
     31: ok ? '¡Correcto! Debería ser "Hoe gaat het?" (con aa, no ae).' : '',
   };
-  showFeedback(id, ok, msgs[id] || (ok ? '¡Correcto!' : `La respuesta es: ${correct}`));
+  showFeedback(id, ok, extras[id] || (ok ? '¡Correcto!' : `La respuesta es: ${correct}`));
   if (ok) markSolved(id);
 }
 
 // ── COMPLETAR ───────────────────────────────────────────────────────────────
 function checkFill(id, correct) {
   const input = document.getElementById(`fill${id}`);
-  const val   = input.value.trim().toLowerCase();
-  const ok    = val === correct.toLowerCase();
+  const ok    = input.value.trim().toLowerCase() === correct.toLowerCase();
   input.style.borderBottomColor = ok ? 'var(--green)' : 'var(--red)';
-  input.disabled = ok;
+  if (ok) input.disabled = true;
   showFeedback(id, ok, ok ? '¡Correcto!' : `La respuesta es: "${correct}"`);
   if (ok) markSolved(id);
 }
@@ -751,46 +750,25 @@ const SCRAMBLES = {
 const scrambleState = {};
 
 function initScramble(id) {
-  const data   = SCRAMBLES[id];
-  const words  = [...data.words].sort(() => Math.random() - 0.5);
+  const words = [...SCRAMBLES[id].words].sort(() => Math.random() - 0.5);
   scrambleState[id] = { words, answer:[] };
   renderScramble(id);
 }
-
 function renderScramble(id) {
-  const state  = scrambleState[id];
-  const bank   = document.getElementById(`bank${id}`);
-  const ans    = document.getElementById(`ans${id}`);
-  bank.innerHTML = state.words.map((w,i) =>
-    `<button class="s-chip ${state.answer.includes(i)?'used':''}" onclick="moveToAnswer(${id},${i})">${w}</button>`
+  const { words, answer } = scrambleState[id];
+  document.getElementById(`bank${id}`).innerHTML = words.map((w,i) =>
+    `<button class="s-chip ${answer.includes(i)?'used':''}" onclick="moveToAnswer(${id},${i})">${w}</button>`
   ).join('');
-  ans.innerHTML = state.answer.map(i =>
-    `<button class="s-chip in-answer" onclick="removeFromAnswer(${id},${i})">${state.words[i]}</button>`
+  document.getElementById(`ans${id}`).innerHTML = answer.map(i =>
+    `<button class="s-chip in-answer" onclick="removeFromAnswer(${id},${i})">${words[i]}</button>`
   ).join('');
 }
-
-function moveToAnswer(id, idx) {
-  scrambleState[id].answer.push(idx);
-  renderScramble(id);
-}
-
-function removeFromAnswer(id, idx) {
-  const s = scrambleState[id];
-  s.answer = s.answer.filter(i => i !== idx);
-  renderScramble(id);
-}
-
-function resetScramble(id) {
-  scrambleState[id].answer = [];
-  renderScramble(id);
-  document.getElementById(`ex${id}-fb`).textContent = '';
-  document.getElementById(`ex${id}`).className = 'ex-card';
-}
-
+function moveToAnswer(id, idx) { scrambleState[id].answer.push(idx); renderScramble(id); }
+function removeFromAnswer(id, idx) { scrambleState[id].answer = scrambleState[id].answer.filter(i=>i!==idx); renderScramble(id); }
+function resetScramble(id) { scrambleState[id].answer=[]; renderScramble(id); document.getElementById(`ex${id}-fb`).textContent=''; document.getElementById(`ex${id}`).className='ex-card'; }
 function checkScramble(id) {
-  const state    = scrambleState[id];
-  const result   = state.answer.map(i => state.words[i]).join(' ');
-  const ok       = result.toLowerCase() === SCRAMBLES[id].answer.toLowerCase();
+  const result = scrambleState[id].answer.map(i=>scrambleState[id].words[i]).join(' ');
+  const ok     = result.toLowerCase() === SCRAMBLES[id].answer.toLowerCase();
   showFeedback(id, ok, ok ? '¡Perfecto!' : `Correcto: "${SCRAMBLES[id].answer}"`);
   if (ok) markSolved(id);
 }
@@ -798,45 +776,39 @@ function checkScramble(id) {
 // ── MATCH ──────────────────────────────────────────────────────────────────
 const MATCH_DATA = {
   15: [
-    {nl:'Hallo!', es:'¡Hola!'}, {nl:'Tot ziens!', es:'¡Hasta luego!'},
-    {nl:'Dank je wel', es:'Muchas gracias'}, {nl:'Smakelijk!', es:'¡Buen provecho!'},
-    {nl:'Help!', es:'¡Ayuda!'}
+    {nl:'Hallo!',es:'¡Hola!'},{nl:'Tot ziens!',es:'¡Hasta luego!'},
+    {nl:'Dank je wel',es:'Muchas gracias'},{nl:'Smakelijk!',es:'¡Buen provecho!'},
+    {nl:'Help!',es:'¡Ayuda!'}
   ],
   16: [
-    {nl:'Alguien estornuda', es:'Gesundheit!'}, // usamos campo nl como situación
-    {nl:'Llega la comida', es:'Smakelijk!'},
-    {nl:'Probaste algo rico', es:'Heerlijk!'},
-    {nl:'Tu amigo cumple años', es:'Proficiat!'},
-    {nl:'Te perdiste', es:'Ik ben verdwaald'},
+    {nl:'Llega la comida',es:'Smakelijk!'},
+    {nl:'Probaste algo rico',es:'Heerlijk!'},
+    {nl:'Tu amigo cumple años',es:'Proficiat!'},
+    {nl:'Te perdiste',es:'Ik ben verdwaald'},
+    {nl:'Necesitás un médico',es:'Ik heb een dokter nodig'},
   ]
 };
-
 const matchState = {};
 
 function initMatch(id) {
-  const pairs  = MATCH_DATA[id];
-  const leftEl = document.getElementById(`match${id}-left`);
-  const rightEl= document.getElementById(`match${id}-right`);
-  matchState[id]= { selected:null, matched:0, total:pairs.length };
-
-  leftEl.innerHTML = pairs.map((p,i) =>
-    `<div class="match-item" id="ml${id}-${i}" onclick="selectMatch(${id},'left',${i},'${p.nl.replace(/'/g,"\\'")}','${p.es.replace(/'/g,"\\'")}')"><span>${p.nl}</span></div>`
+  const pairs = MATCH_DATA[id];
+  matchState[id] = { selected:null, matched:0, total:pairs.length };
+  document.getElementById(`match${id}-left`).innerHTML = pairs.map((p,i) =>
+    `<div class="match-item" id="ml${id}-${i}" onclick="selectMatch(${id},'left',${i})">${p.nl}</div>`
   ).join('');
-
   const shuffled = [...pairs].sort(()=>Math.random()-.5);
-  rightEl.innerHTML = shuffled.map((p,i) =>
-    `<div class="match-item" id="mr${id}-${i}" onclick="selectMatch(${id},'right',${i},'${p.nl.replace(/'/g,"\\'")}','${p.es.replace(/'/g,"\\'")}')"><span>${p.es}</span></div>`
+  document.getElementById(`match${id}-right`).innerHTML = shuffled.map((p,i) =>
+    `<div class="match-item" id="mr${id}-${i}" data-nl="${p.nl}" onclick="selectMatch(${id},'right',${i})">${p.es}</div>`
   ).join('');
 }
 
-function selectMatch(id, side, idx, nl, es) {
+function selectMatch(id, side, idx) {
   const state = matchState[id];
-  const elId  = side==='left' ? `ml${id}-${idx}` : `mr${id}-${idx}`;
-  const el    = document.getElementById(elId);
+  const el    = document.getElementById(side==='left'?`ml${id}-${idx}`:`mr${id}-${idx}`);
   if (el.classList.contains('matched')) return;
 
   if (!state.selected) {
-    state.selected = { side, idx, nl, es, el };
+    state.selected = { side, idx, el };
     el.classList.add('selected');
     return;
   }
@@ -844,144 +816,174 @@ function selectMatch(id, side, idx, nl, es) {
   const prev = state.selected;
   if (prev.side === side) {
     prev.el.classList.remove('selected');
-    state.selected = { side, idx, nl, es, el };
+    state.selected = { side, idx, el };
     el.classList.add('selected');
     return;
   }
 
-  // Comparar si son el mismo par
-  const leftNl  = prev.side === 'left' ? prev.nl : nl;
-  const rightEs = prev.side === 'right' ? prev.es : es;
-  const leftEs  = prev.side === 'left' ? prev.es : es;
+  // Determinar qué es left y qué es right
+  const leftIdx  = prev.side==='left' ? prev.idx : idx;
+  const rightIdx = prev.side==='right' ? prev.idx : idx;
+  const leftEl   = prev.side==='left' ? prev.el : el;
+  const rightEl  = prev.side==='right' ? prev.el : el;
 
-  const isMatch = prev.nl === nl || prev.es === es || prev.nl === nl || leftNl === (prev.side==='left'?prev.nl:nl);
-  // Simpler check: match by nl value
-  const nlA = prev.side==='left' ? prev.nl : nl;
-  const nlB = prev.side==='left' ? nl : prev.nl;
-  const esA = prev.side==='right' ? prev.es : es;
-  const esB = prev.side==='right' ? es : prev.es;
+  const pairs = MATCH_DATA[id];
+  const leftNl  = pairs[leftIdx].nl;
+  const rightNl = rightEl.dataset.nl;
+  const isMatch = leftNl === rightNl;
 
-  // Find pair
-  const pairData = MATCH_DATA[id];
-  const match = pairData.find(p =>
-    (p.nl === (prev.side==='left'?prev.nl:nl)) && (p.es === (prev.side==='right'?prev.es:es))
-  );
-
-  if (match) {
-    prev.el.classList.remove('selected'); prev.el.classList.add('matched');
-    el.classList.add('matched');
+  if (isMatch) {
+    leftEl.classList.remove('selected'); leftEl.classList.add('matched');
+    rightEl.classList.add('matched');
     state.matched++;
     state.selected = null;
-    if (state.matched === state.total) {
-      showFeedback(id, true, '¡Todos los pares encontrados! 🎉');
-      markSolved(id);
-    }
+    if (state.matched === state.total) { showFeedback(id, true, '¡Todos los pares encontrados! 🎉'); markSolved(id); }
   } else {
-    prev.el.classList.remove('selected');
-    el.classList.add('wrong-flash'); prev.el.classList.add('wrong-flash');
-    setTimeout(()=>{ el.classList.remove('wrong-flash'); prev.el.classList.remove('wrong-flash'); }, 600);
+    leftEl.classList.add('wrong-flash'); rightEl.classList.add('wrong-flash');
+    setTimeout(()=>{ leftEl.classList.remove('selected','wrong-flash'); rightEl.classList.remove('wrong-flash'); }, 600);
     state.selected = null;
   }
 }
 
-// ── DRAG AND DROP ──────────────────────────────────────────────────────────
+// ── EX 17: TAP-TO-CLASSIFY ─────────────────────────────────────────────────
+// En móvil el drag nativo no funciona bien. Usamos tap en dos pasos:
+// 1) tap en una frase → queda seleccionada (resaltada)
+// 2) tap en una zona → la frase cae ahí
 const DRAG_ITEMS_17 = [
-  { text:'Dag!', cat:'Saludos' }, { text:'Hallo!', cat:'Saludos' },
-  { text:'Help!', cat:'Emergencias' }, { text:'Tot ziens!', cat:'Saludos' },
-  { text:'Bel de politie!', cat:'Emergencias' }, { text:'Ik ben verdwaald', cat:'Emergencias' },
+  {text:'Dag!',cat:'Saludos'},{text:'Hallo!',cat:'Saludos'},
+  {text:'Help!',cat:'Emergencias'},{text:'Tot ziens!',cat:'Saludos'},
+  {text:'Bel de politie!',cat:'Emergencias'},{text:'Ik ben verdwaald',cat:'Emergencias'},
 ];
 const dropState17 = { Saludos:[], Emergencias:[] };
+let selectedChip17 = null; // { text, cat, el }
 
 function initDrag17() {
-  const bank = document.getElementById('dragBank17');
-  bank.innerHTML = DRAG_ITEMS_17.map(item =>
-    `<div class="drag-chip" draggable="true" id="dc-${item.text.replace(/[^a-z]/gi,'')}" data-cat="${item.cat}"
-      ondragstart="event.dataTransfer.setData('text',JSON.stringify({text:'${item.text}',cat:'${item.cat}'}))">
-      ${item.text}
-    </div>`
+  document.getElementById('dragBank17').innerHTML = DRAG_ITEMS_17.map(item =>
+    `<button class="drag-chip" id="dc17-${item.text.replace(/[^a-zA-Z]/g,'')}" onclick="selectChip17('${item.text}','${item.cat}')">${item.text}</button>`
   ).join('');
 }
 
-function handleDrop(event, cat) {
-  event.preventDefault();
-  event.currentTarget.classList.remove('over');
-  const data = JSON.parse(event.dataTransfer.getData('text'));
-  const chipId = `dc-${data.text.replace(/[^a-z]/gi,'')}`;
-  const chip   = document.getElementById(chipId);
-  if (chip) chip.style.display = 'none';
-  dropState17[cat].push(data.text);
-  const zone = document.getElementById(`drop${cat}`);
-  const newChip = document.createElement('div');
-  newChip.className = 'drag-chip in-target locked';
-  newChip.textContent = data.text;
-  zone.appendChild(newChip);
+function selectChip17(text, cat) {
+  // Deseleccionar anterior
+  if (selectedChip17) selectedChip17.el.style.outline = '';
+  const el = document.getElementById(`dc17-${text.replace(/[^a-zA-Z]/g,'')}`);
+  if (!el || el.style.display === 'none') return;
+  selectedChip17 = { text, cat, el };
+  el.style.outline = '2px solid var(--gold)';
+  el.style.outlineOffset = '2px';
+}
+
+function tapDrop(zoneCat) {
+  if (!selectedChip17) {
+    showFeedback(17, false, 'Primero tocá una frase del banco, luego tocá la categoría');
+    return;
+  }
+  const { text, cat, el } = selectedChip17;
+  el.style.outline = '';
+  el.style.display = 'none';
+  dropState17[zoneCat].push({ text, cat });
+
+  const zone = document.getElementById(`drop${zoneCat}`);
+  const chip = document.createElement('div');
+  chip.className = 'drag-chip in-target';
+  chip.textContent = text;
+  chip.style.cursor = 'pointer';
+  chip.title = 'Tocar para devolver al banco';
+  chip.onclick = () => {
+    // Devolver al banco
+    chip.remove();
+    dropState17[zoneCat] = dropState17[zoneCat].filter(i=>i.text!==text);
+    el.style.display = '';
+  };
+  zone.appendChild(chip);
+  selectedChip17 = null;
+  document.getElementById('ex17-fb').textContent = '';
+}
+
+function resetDrag17() {
+  dropState17.Saludos = []; dropState17.Emergencias = [];
+  selectedChip17 = null;
+  document.getElementById('dropSaludos').innerHTML = '';
+  document.getElementById('dropEmergencias').innerHTML = '';
+  document.getElementById('ex17-fb').textContent = '';
+  document.getElementById('ex17').className = 'ex-card';
+  initDrag17();
 }
 
 function checkDragDrop(id) {
   const correct = { Saludos:['Dag!','Hallo!','Tot ziens!'], Emergencias:['Help!','Bel de politie!','Ik ben verdwaald'] };
+  const allPlaced = dropState17.Saludos.length + dropState17.Emergencias.length === DRAG_ITEMS_17.length;
+  if (!allPlaced) { showFeedback(id,false,'Clasificá todas las frases antes de verificar'); return; }
   let ok = true;
   for (const cat of ['Saludos','Emergencias']) {
-    const placed = dropState17[cat].sort().join(',');
+    const placed = dropState17[cat].map(i=>i.text).sort().join(',');
     const exp    = correct[cat].sort().join(',');
-    if (placed !== exp) { ok = false; break; }
+    if (placed !== exp) { ok=false; break; }
   }
-  showFeedback(id, ok, ok ? '¡Clasificación perfecta!' : 'Revisá las categorías — algunas frases están mal ubicadas');
+  showFeedback(id, ok, ok ? '¡Clasificación perfecta!' : 'Alguna frase está en la categoría equivocada');
   if (ok) markSolved(id);
 }
 
-// Word drop 18
-const WORDS18 = ['Dank','u','wel'];
-const zone18  = [];
+// ── EX 18: DRAG WORDS ──────────────────────────────────────────────────────
+const WORDS18  = ['Dank','u','wel'];
+const zone18   = [];
 
 function initDrag18() {
   const shuffled = [...WORDS18].sort(()=>Math.random()-.5);
-  const bank = document.getElementById('dragBank18');
-  bank.innerHTML = shuffled.map((w,i) =>
+  document.getElementById('dragBank18').innerHTML = shuffled.map((w,i) =>
     `<div class="drag-chip" draggable="true" id="w18-${i}"
       ondragstart="event.dataTransfer.setData('text',JSON.stringify({word:'${w}',idx:${i}}))">
       ${w}
     </div>`
   ).join('');
 }
-
-function handleWordDrop(event, zoneId) {
+function handleWordDrop(event) {
   event.preventDefault();
   event.currentTarget.classList.remove('over');
   const data = JSON.parse(event.dataTransfer.getData('text'));
   document.getElementById(`w18-${data.idx}`).style.display='none';
   zone18.push(data.word);
   const chip = document.createElement('div');
-  chip.className = 'drag-chip in-target';
-  chip.textContent = data.word;
-  chip.onclick = () => { chip.remove(); const i=zone18.indexOf(data.word); if(i>-1)zone18.splice(i,1); document.getElementById(`w18-${data.idx}`).style.display=''; };
+  chip.className='drag-chip in-target';
+  chip.textContent=data.word;
+  chip.onclick=()=>{ chip.remove(); const i=zone18.indexOf(data.word); if(i>-1)zone18.splice(i,1); document.getElementById(`w18-${data.idx}`).style.display=''; };
   document.getElementById('dropZone18').appendChild(chip);
 }
-
 function checkWordDrop(id) {
-  const ok = zone18.join(' ') === 'Dank u wel';
-  showFeedback(id, ok, ok ? '¡Correcto! Dank u wel = Muchas gracias (formal)' : `Orden correcto: "Dank u wel"`);
-  if (ok) markSolved(id);
+  const ok = zone18.join(' ')==='Dank u wel';
+  showFeedback(id,ok,ok?'¡Correcto! Dank u wel = Muchas gracias (formal)':'Orden correcto: "Dank u wel"');
+  if(ok)markSolved(id);
 }
-
 function resetWordDrop(id) {
-  zone18.length = 0;
-  document.getElementById('dropZone18').innerHTML = '';
-  document.querySelectorAll('[id^="w18-"]').forEach(el => el.style.display='');
+  zone18.length=0;
+  document.getElementById('dropZone18').innerHTML='';
+  document.querySelectorAll('[id^="w18-"]').forEach(el=>el.style.display='');
   document.getElementById(`ex${id}-fb`).textContent='';
   document.getElementById(`ex${id}`).className='ex-card';
 }
 
-// ── AUDIO ──────────────────────────────────────────────────────────────────
-function playTTS(text, btnId) {
-  const url = `https://translate.google.com/translate_tts?ie=UTF-8&q=${encodeURIComponent(text)}&tl=nl&client=tw-ob`;
-  const audio = new Audio(url);
+// ── AUDIO EJERCICIOS 19 y 20 ────────────────────────────────────────────────
+// Mismo patrón que frases.html: elemento <audio> en el DOM, asignar src
+// en el mismo evento click para que Android Chrome lo permita.
+function playExAudio(text, btnId) {
   const btn = document.getElementById(btnId);
   btn.classList.add('playing');
-  audio.play().catch(()=>{});
-  audio.onended = () => btn.classList.remove('playing');
+  exPlayer.src = `https://translate.google.com/translate_tts?ie=UTF-8&q=${encodeURIComponent(text)}&tl=nl&client=tw-ob`;
+  exPlayer.load();
+  exPlayer.play().catch(() => {
+    btn.classList.remove('playing');
+    // Fallback: SpeechSynthesis
+    if (window.speechSynthesis) {
+      const u = new SpeechSynthesisUtterance(text);
+      const v = speechSynthesis.getVoices().find(v=>v.lang.startsWith('nl'));
+      if (v) { u.voice=v; u.lang=v.lang; } else { u.lang='nl-BE'; }
+      u.rate=0.85;
+      u.onend=()=>btn.classList.remove('playing');
+      speechSynthesis.speak(u);
+    }
+  });
+  exPlayer.onended = () => btn.classList.remove('playing');
 }
-function playAudio19() { playTTS('Goedemiddag', 'audioBtn19'); }
-function playAudio20() { playTTS('Heerlijk', 'audioBtn20'); }
 
 // ── MEMORY ─────────────────────────────────────────────────────────────────
 const MEM_PAIRS = [
@@ -990,74 +992,72 @@ const MEM_PAIRS = [
   ['Proficiat!','¡Felicitaciones!'],['Heerlijk!','¡Delicioso!'],
   ['Allez!','¡Vamos!'],['Help!','¡Ayuda!'],
 ];
-let memFlipped = [], memMatched = 0, memLocked = false;
+let memFlipped=[], memMatched=0, memLocked=false;
 
 function initMemory() {
-  const cards = [];
+  const cards=[];
   MEM_PAIRS.forEach(([nl,es],i)=>{ cards.push({id:`nl${i}`,text:nl,pair:i}); cards.push({id:`es${i}`,text:es,pair:i}); });
   cards.sort(()=>Math.random()-.5);
-  const grid = document.getElementById('memGrid');
-  grid.innerHTML = cards.map(c =>
-    `<div class="mem-card hidden-face" id="mem-${c.id}" data-pair="${c.pair}" data-text="${c.text}" onclick="flipMemCard('${c.id}','${c.pair}','${c.text.replace(/'/g,"\\'")}')"></div>`
+  document.getElementById('memGrid').innerHTML = cards.map(c=>
+    `<div class="mem-card hidden-face" id="mem-${c.id}" data-pair="${c.pair}" data-text="${c.text.replace(/"/g,'&quot;')}" onclick="flipMemCard('${c.id}','${c.pair}','${c.text.replace(/'/g,"\\'")}')"></div>`
   ).join('');
 }
-
-function flipMemCard(id, pair, text) {
-  if (memLocked) return;
-  const el = document.getElementById(`mem-${id}`);
-  if (el.classList.contains('flipped') || el.classList.contains('matched')) return;
-  el.classList.remove('hidden-face');
-  el.classList.add('flipped');
-  el.textContent = text;
-  memFlipped.push({ id, pair, el });
-  if (memFlipped.length === 2) {
-    memLocked = true;
-    setTimeout(checkMemPair, 800);
-  }
+function flipMemCard(id,pair,text) {
+  if(memLocked)return;
+  const el=document.getElementById(`mem-${id}`);
+  if(el.classList.contains('flipped')||el.classList.contains('matched'))return;
+  el.classList.remove('hidden-face'); el.classList.add('flipped'); el.textContent=text;
+  memFlipped.push({id,pair,el});
+  if(memFlipped.length===2){memLocked=true; setTimeout(checkMemPair,800);}
 }
-
 function checkMemPair() {
-  const [a,b] = memFlipped;
-  if (a.pair === b.pair) {
-    a.el.classList.add('matched'); b.el.classList.add('matched');
-    memMatched++;
-    if (memMatched === MEM_PAIRS.length) {
-      showFeedback(28, true, '¡Todos los pares encontrados! 🎉');
-      markSolved(28);
-    }
+  const[a,b]=memFlipped;
+  if(a.pair==b.pair){
+    a.el.classList.add('matched'); b.el.classList.add('matched'); memMatched++;
+    if(memMatched===MEM_PAIRS.length){showFeedback(28,true,'¡Todos los pares encontrados! 🎉');markSolved(28);}
   } else {
     a.el.classList.remove('flipped'); a.el.classList.add('hidden-face'); a.el.textContent='';
     b.el.classList.remove('flipped'); b.el.classList.add('hidden-face'); b.el.textContent='';
   }
-  memFlipped = [];
-  memLocked  = false;
+  memFlipped=[]; memLocked=false;
 }
 
 // ── DIALOG ORDER ────────────────────────────────────────────────────────────
 const DIALOG_LINES = [
-  { text:'Hallo! Ik heet Ana.', order:1 },
-  { text:'Aangenaam! Ik heet Pieter.', order:2 },
-  { text:'Ik kom uit Argentinië.', order:3 },
-  { text:'Niet te doen! Welkom in België!', order:4 },
+  {text:'Hallo! Ik heet Ana.',order:1},
+  {text:'Aangenaam! Ik heet Pieter.',order:2},
+  {text:'Ik kom uit Argentinië.',order:3},
+  {text:'Niet te doen! Welkom in België!',order:4},
 ];
-let dialogSelections = [];
+let dialogSelections=[], dialogOrder=[];
 
 function initDialog() {
   const shuffled = [...DIALOG_LINES].sort(()=>Math.random()-.5);
-  const wrap = document.getElementById('dialogOrder');
-  wrap.innerHTML = shuffled.map((l,i) =>
+  dialogSelections = shuffled;
+  dialogOrder = [];
+  document.getElementById('dialogOrder').innerHTML = shuffled.map((l,i)=>
     `<div class="opt" id="dl-${i}" onclick="selectDialogLine(${i})">${l.text}</div>`
   ).join('');
-  dialogSelections = shuffled;
+  document.getElementById('ex30-fb').textContent='';
+  document.getElementById('ex30').className='ex-card';
 }
 
-let dialogOrder = [];
+function resetDialog() { initDialog(); }
+
 function selectDialogLine(i) {
   const el = document.getElementById(`dl-${i}`);
-  if (el.classList.contains('correct')) return;
-  if (dialogOrder.includes(i)) {
-    dialogOrder = dialogOrder.filter(x=>x!==i);
+  if (el.classList.contains('correct') || el.classList.contains('disabled')) return;
+  const pos = dialogOrder.indexOf(i);
+  if (pos !== -1) {
+    // Deseleccionar: quitar de la lista y actualizar todos los labels
+    dialogOrder.splice(pos, 1);
     el.classList.remove('selected');
+    el.textContent = dialogSelections[i].text;
+    // Redibujar números de los que quedan
+    dialogOrder.forEach((lineIdx, p) => {
+      const e = document.getElementById(`dl-${lineIdx}`);
+      e.textContent = `${p+1}. ${dialogSelections[lineIdx].text}`;
+    });
   } else {
     dialogOrder.push(i);
     el.textContent = `${dialogOrder.length}. ${dialogSelections[i].text}`;
@@ -1066,38 +1066,64 @@ function selectDialogLine(i) {
 }
 
 function checkDialog() {
-  if (dialogOrder.length !== 4) { showFeedback(30,false,'Ordená todas las 4 frases'); return; }
-  const ok = dialogOrder.every((lineIdx,pos) => dialogSelections[lineIdx].order === pos+1);
-  showFeedback(30, ok, ok ? '¡Orden perfecto!' : 'El orden correcto: Hallo → Aangenaam → Argentinië → Welkom');
-  if (ok) markSolved(30);
+  if (dialogOrder.length!==4){showFeedback(30,false,'Ordená todas las 4 frases');return;}
+  const ok=dialogOrder.every((lineIdx,pos)=>dialogSelections[lineIdx].order===pos+1);
+  showFeedback(30,ok,ok?'¡Orden perfecto!':'El orden correcto: Hallo → Aangenaam → Argentinië → Welkom');
+  if(ok)markSolved(30);
 }
 
-// ── RESULTS ────────────────────────────────────────────────────────────────
+// ── ALEATORIZAR SECCIONES ───────────────────────────────────────────────────
+// Mezcla el orden de las secciones de ejercicios cada vez que se carga la página.
+// Los ejercicios dentro de cada sección también se mezclan.
+function shuffleSections() {
+  const wrap = document.querySelector('.wrap');
+  // Recolectar todas las secciones (ex-section) sin tocar nav, header, progress, results
+  const sections = Array.from(document.querySelectorAll('.ex-section'));
+  sections.sort(()=>Math.random()-.5);
+  // Insertar antes del bloque de resultados
+  const resultsBox = document.getElementById('resultsBox');
+  sections.forEach(s => wrap.insertBefore(s, resultsBox));
+
+  // Mezclar cards dentro de cada sección (excepto las que tienen estado fijo como memory/dialog)
+  sections.forEach(section => {
+    const cards = Array.from(section.querySelectorAll('.ex-card'));
+    if (cards.length < 2) return;
+    const parent = cards[0].parentNode;
+    cards.sort(()=>Math.random()-.5);
+    cards.forEach(c => parent.appendChild(c));
+  });
+}
+
+// ── RESULTS ─────────────────────────────────────────────────────────────────
 function showResults() {
-  const box = document.getElementById('resultsBox');
+  const box=document.getElementById('resultsBox');
   box.classList.add('show');
-  document.getElementById('resultsScore').textContent = solved.size;
-  const pct = Math.round(solved.size/TOTAL*100);
-  const msg = pct===100 ? '¡Perfecto! Eres un maestro del Vlaams 🏆'
-            : pct>=75   ? '¡Muy bien! Ya hablás como un flamenco 👏'
-            : pct>=50   ? '¡Bien! Seguí practicando 💪'
-            :             'Seguí intentando, vas a lograrlo 🌱';
-  document.getElementById('resultsMsg').textContent = msg;
-  box.scrollIntoView({ behavior:'smooth' });
+  document.getElementById('resultsScore').textContent=solved.size;
+  const pct=Math.round(solved.size/TOTAL*100);
+  document.getElementById('resultsMsg').textContent=
+    pct===100?'¡Perfecto! Eres un maestro del Vlaams 🏆':
+    pct>=75  ?'¡Muy bien! Ya hablás como un flamenco 👏':
+    pct>=50  ?'¡Bien! Seguí practicando 💪':'Seguí intentando, vas a lograrlo 🌱';
+  box.scrollIntoView({behavior:'smooth'});
 }
 
-// ── THEME ──────────────────────────────────────────────────────────────────
-function toggleTheme() {
-  document.documentElement.classList.toggle('light');
-}
+// ── THEME ───────────────────────────────────────────────────────────────────
+function toggleTheme() { document.documentElement.classList.toggle('light'); }
 
-// ── INIT ───────────────────────────────────────────────────────────────────
+// ── INIT ────────────────────────────────────────────────────────────────────
+// Elemento de audio oculto para ejercicios 19/20 (mismo truco que frases.html)
+const exPlayer = document.createElement('audio');
+exPlayer.style.display = 'none';
+document.body.appendChild(exPlayer);
+
+shuffleSections();
 [12,13,14].forEach(initScramble);
 [15,16].forEach(initMatch);
 initDrag17();
 initDrag18();
 initMemory();
 initDialog();
+
 </script>
 </body>
 </html>
