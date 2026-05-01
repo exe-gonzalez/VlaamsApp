@@ -453,55 +453,126 @@ let searchTerm   = "";
 let currentAudio = null;
 let currentId    = null;
 
-// ── AUDIO via Google Translate TTS ─────────────────────────────────────────
-// Usa un elemento <audio> con la URL pública de Google Translate.
-// Funciona en Brave, Firefox, Safari y cualquier navegador sin restricciones
-// de Web Speech API. Requiere conexión a internet.
-function buildTTSUrl(text) {
-  return `https://translate.google.com/translate_tts?ie=UTF-8&q=${encodeURIComponent(text)}&tl=nl&client=tw-ob`;
+// ── AUDIO: sistema híbrido móvil-primero ────────────────────────────────────
+//
+// ESTRATEGIA:
+// 1. En móvil Android usamos SpeechSynthesis (Web Speech API) directo —
+//    funciona porque el .speak() se llama sincrónicamente dentro del mismo
+//    evento touch, sin perder el contexto de gesto del usuario.
+// 2. Si SpeechSynthesis no tiene voz en neerlandés, usamos la misma API
+//    con cualquier voz disponible (igual se entiende la pronunciación).
+// 3. En desktop Brave donde Web Speech está bloqueada, usamos Google TTS
+//    vía fetch+blob: convertimos el MP3 a un blob URL local, lo que evita
+//    el bloqueo de autoplay de recursos externos.
+//
+// El truco clave del blob: en vez de new Audio(urlExterno).play() — que
+// Android bloquea porque el recurso tarda en cargar y se pierde el gesto —
+// hacemos fetch() del MP3, lo convertimos a blob:// local, y recién entonces
+// llamamos a audio.play(). Pero como fetch es async, igual pierde el gesto
+// en móvil. Por eso en móvil SpeechSynthesis es la mejor opción.
+
+const isMobile = /Android|iPhone|iPad/i.test(navigator.userAgent);
+
+// Pre-cargar voces (necesario en algunos navegadores)
+let voices = [];
+function loadVoices() {
+  voices = window.speechSynthesis ? speechSynthesis.getVoices() : [];
+}
+if (window.speechSynthesis) {
+  loadVoices();
+  speechSynthesis.onvoiceschanged = loadVoices;
+}
+
+function getBestVoice() {
+  if (!voices.length) loadVoices();
+  return voices.find(v => v.lang === 'nl-BE')
+      || voices.find(v => v.lang === 'nl-NL')
+      || voices.find(v => v.lang.startsWith('nl'))
+      || voices[0]
+      || null;
+}
+
+function speakWithSpeechAPI(text, id) {
+  speechSynthesis.cancel();
+  const utter  = new SpeechSynthesisUtterance(text);
+  const voice  = getBestVoice();
+  if (voice) { utter.voice = voice; utter.lang = voice.lang; }
+  else        { utter.lang = 'nl-BE'; }
+  utter.rate  = 0.85;
+  utter.pitch = 1;
+
+  utter.onstart = () => setPlaying(id, true);
+  utter.onend   = () => { setPlaying(id, false); currentId = null; };
+  utter.onerror = (e) => {
+    if (e.error === 'interrupted') return;
+    setPlaying(id, false);
+    currentId = null;
+    speakWithGoogleTTS(text, id); // fallback a Google TTS
+  };
+
+  setPlaying(id, true);
+  currentId = id;
+  speechSynthesis.speak(utter);
+}
+
+function speakWithGoogleTTS(text, id) {
+  const url = `https://translate.google.com/translate_tts?ie=UTF-8&q=${encodeURIComponent(text)}&tl=nl&client=tw-ob`;
+
+  // Usamos fetch → blob para evitar bloqueo de autoplay en recursos externos
+  fetch(url)
+    .then(r => r.blob())
+    .then(blob => {
+      const blobUrl = URL.createObjectURL(blob);
+      const audio   = new Audio(blobUrl);
+      currentAudio  = audio;
+      audio.onended = () => {
+        setPlaying(id, false);
+        currentAudio = null;
+        currentId    = null;
+        URL.revokeObjectURL(blobUrl);
+      };
+      audio.onerror = () => {
+        setPlaying(id, false);
+        currentAudio = null;
+        currentId    = null;
+        showToast("No se pudo cargar el audio. Verificá tu conexión.");
+      };
+      return audio.play();
+    })
+    .catch(() => {
+      setPlaying(id, false);
+      currentId = null;
+      showToast("No se pudo reproducir el audio.");
+    });
 }
 
 function speak(id) {
   const phrase = PHRASES.find(p => p.id === id);
   if (!phrase) return;
 
-  // Clic en el mismo → pausar/detener
-  if (currentId === id && currentAudio) {
+  // Clic en el mismo → detener
+  if (currentId === id) {
     stopAudio();
     return;
   }
 
   stopAudio();
-
-  setPlaying(id, true);
   currentId = id;
+  setPlaying(id, true);
 
-  const audio = new Audio(buildTTSUrl(phrase.nl));
-  audio.volume = 1;
-  currentAudio = audio;
-
-  audio.onended = () => {
-    setPlaying(id, false);
-    currentAudio = null;
-    currentId    = null;
-  };
-
-  audio.onerror = () => {
-    setPlaying(id, false);
-    currentAudio = null;
-    currentId    = null;
-    showToast("No se pudo cargar el audio. Verificá tu conexión a internet.");
-  };
-
-  audio.play().catch(() => {
-    setPlaying(id, false);
-    currentAudio = null;
-    currentId    = null;
-    showToast("Activá el audio haciendo clic primero en cualquier parte de la página.");
-  });
+  // En móvil: SpeechSynthesis directa (funciona dentro del gesto touch)
+  // En desktop: Google TTS via fetch→blob
+  if (isMobile && window.speechSynthesis) {
+    speakWithSpeechAPI(phrase.nl, id);
+  } else if (window.speechSynthesis && voices.length > 0) {
+    speakWithSpeechAPI(phrase.nl, id);
+  } else {
+    speakWithGoogleTTS(phrase.nl, id);
+  }
 }
 
 function stopAudio() {
+  if (window.speechSynthesis) speechSynthesis.cancel();
   if (currentAudio) { currentAudio.pause(); currentAudio = null; }
   if (currentId !== null) { setPlaying(currentId, false); currentId = null; }
 }
