@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Spreek Vlaams — Frases para Flandes</title>
+<title>Spreek Vlaams — Números</title>
 <style>
   :root {
     --gold: #F59E0B;
@@ -46,8 +46,8 @@
     position: fixed;
     inset: 0;
     background-image:
-      radial-gradient(circle at 15% 85%, rgba(184,146,42,0.05) 0%, transparent 55%),
-      radial-gradient(circle at 85% 15%, rgba(184,146,42,0.04) 0%, transparent 55%);
+      radial-gradient(circle at 15% 85%, rgba(59,130,246,0.05) 0%, transparent 55%),
+      radial-gradient(circle at 85% 15%, rgba(245,158,11,0.04) 0%, transparent 55%);
     pointer-events: none;
     z-index: 0;
   }
@@ -252,27 +252,6 @@
   .play-btn:hover { border-color: var(--gold); color: var(--gold); }
   .play-btn.active { background: var(--gold); border-color: var(--gold); color: #0D0D0D; }
 
-  /* GUÍA */
-  .guide-box {
-    background: var(--surface);
-    border: 0.5px solid var(--border);
-    border-radius: 10px;
-    padding: 20px;
-    margin-bottom: 40px;
-    transition: background 0.25s;
-  }
-  .guide-title {
-    font-size: 11px; font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: var(--accent);
-    margin-bottom: 14px;
-  }
-  .guide-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px; }
-  .guide-item { display: flex; gap: 10px; align-items: flex-start; }
-  .guide-sound { font-size: 14px; font-weight: 700; color: var(--gold); min-width: 40px; }
-  .guide-desc { font-size: 12px; color: var(--muted); line-height: 1.5; }
-
   /* EMPTY */
   .empty { text-align: center; padding: 48px 20px; color: var(--muted); }
 
@@ -331,14 +310,7 @@
     .phrase-nl { font-size: 15px; }
     .phrase-es { font-size: 13px; }
     .play-btn { width: 36px; height: 36px; }
-    .guide-grid { grid-template-columns: 1fr 1fr; }
-    .guide-box { padding: 16px; }
     .toast { font-size: 12px; padding: 9px 16px; }
-  }
-  @media (max-width: 380px) {
-    .container { padding: 0 14px; }
-    h1 { font-size: 24px; }
-    .guide-grid { grid-template-columns: 1fr; }
   }
 </style>
 </head>
@@ -351,8 +323,8 @@
       <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
       Inicio
     </a>
-    <span style="font-size:11px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold)">Frases esenciales</span>
-    <a href="ejercicios.html" style="display:flex;align-items:center;gap:6px;text-decoration:none;background:var(--gold);color:#0D0D0D;font-size:12px;font-weight:700;padding:7px 14px;border-radius:100px;transition:opacity 0.2s;" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">
+    <span style="font-size:11px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold)">Números</span>
+    <a href="ejercicios.html" style="display:flex;align-items:center;gap:6px;text-decoration:none;background:var(--gold);color:#0F172A;font-size:12px;font-weight:700;padding:7px 14px;border-radius:100px;transition:opacity 0.2s;" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">
       🎮 Ejercicios →
     </a>
   </nav>
@@ -361,8 +333,8 @@
     <div class="header-top">
       <div>
         <div class="header-eyebrow">Flandes · Bélgica</div>
-        <h1>Spreek <span>Vlaams</span></h1>
-        <p class="header-sub">Frases esenciales en neerlandés flamenco para comunicarte en Bélgica</p>
+        <h1>Los <span>Números</span></h1>
+        <p class="header-sub">Aprende a contar, números ordinales, operaciones y fechas en neerlandés flamenco</p>
       </div>
       <div class="theme-wrap">
         <button class="theme-btn" id="themeBtn" title="Cambiar tema" onclick="toggleTheme()"></button>
@@ -376,23 +348,11 @@
       <circle cx="6.5" cy="6.5" r="5" stroke="currentColor" stroke-width="1.3"/>
       <path d="M10.5 10.5L14 14" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
     </svg>
-    <input type="text" id="search" placeholder="Buscar en español o neerlandés..." autocomplete="off" spellcheck="false">
+    <input type="text" id="search" placeholder="Buscar número..." autocomplete="off" spellcheck="false">
   </div>
 
   <div class="cats" id="cats"></div>
   <div id="main-content"></div>
-
-  <div class="guide-box">
-    <div class="guide-title">Guía de pronunciación</div>
-    <div class="guide-grid">
-      <div class="guide-item"><div class="guide-sound">ij/ei</div><div class="guide-desc">Como "ay" — fijn = "fayn"</div></div>
-      <div class="guide-item"><div class="guide-sound">oe</div><div class="guide-desc">Como "u" larga — goed = "jut"</div></div>
-      <div class="guide-item"><div class="guide-sound">ui</div><div class="guide-desc">"oy" con labios redondos</div></div>
-      <div class="guide-item"><div class="guide-sound">g/ch</div><div class="guide-desc">Suave en Flandes, casi "h"</div></div>
-      <div class="guide-item"><div class="guide-sound">w</div><div class="guide-desc">Como "v" — water = "vater"</div></div>
-      <div class="guide-item"><div class="guide-sound">r</div><div class="guide-desc">Suave, casi gutural</div></div>
-    </div>
-  </div>
 
 </div>
 
@@ -405,75 +365,75 @@
 <script>
 // ── DATOS ──────────────────────────────────────────────────────────────────
 const PHRASES = [
-  { id:1,  cat:"Saludos",      nl:"Hallo!",                           phonetic:"ha-LO",                        es:"¡Hola!",                      tip:"El saludo más universal en Flandes" },
-  { id:2,  cat:"Saludos",      nl:"Goedemorgen",                      phonetic:"jú-de-MOR-ghen",                es:"Buenos días" },
-  { id:3,  cat:"Saludos",      nl:"Goedemiddag",                      phonetic:"jú-de-MI-daj",                  es:"Buenas tardes" },
-  { id:4,  cat:"Saludos",      nl:"Goedenavond",                      phonetic:"jú-de-NA-font",                 es:"Buenas noches" },
-  { id:5,  cat:"Saludos",      nl:"Hoe gaat het?",                    phonetic:"ju JAT et",                     es:"¿Cómo estás?",                tip:"Respuesta típica: 'Goed, dank je'" },
-  { id:6,  cat:"Saludos",      nl:"Tot ziens!",                       phonetic:"tot SIENS",                     es:"¡Hasta luego!" },
-  { id:7,  cat:"Saludos",      nl:"Tot morgen",                       phonetic:"tot MOR-ghen",                  es:"Hasta mañana" },
-  { id:8,  cat:"Saludos",      nl:"Dag!",                             phonetic:"daj",                           es:"¡Adiós! / ¡Hola!",            tip:"En Flandes se usa para saludar Y despedirse" },
-  { id:9,  cat:"Presentarse",  nl:"Ik heet...",                       phonetic:"ik JEET",                       es:"Me llamo..." },
-  { id:10, cat:"Presentarse",  nl:"Ik kom uit Argentinië",            phonetic:"ik kom OWT ar-gen-TI-ni-ye",    es:"Soy de Argentina" },
-  { id:11, cat:"Presentarse",  nl:"Aangenaam!",                       phonetic:"AN-ghe-nam",                    es:"¡Encantado/a!" },
-  { id:12, cat:"Presentarse",  nl:"Ik spreek een beetje Nederlands",  phonetic:"ik SPREK en BEET-ye NE-der-lants", es:"Hablo un poco de neerlandés", tip:"¡Esta frase siempre genera buena onda!" },
-  { id:13, cat:"Presentarse",  nl:"Spreekt u Engels?",                phonetic:"sprekt ü ENG-els",              es:"¿Habla inglés?",              tip:"Útil cuando el neerlandés no alcanza" },
-  { id:14, cat:"Día a día",    nl:"Alstublieft",                      phonetic:"als-tü-BLEFT",                  es:"Por favor (formal)" },
-  { id:15, cat:"Día a día",    nl:"Alsjeblieft",                      phonetic:"als-je-BLEFT",                  es:"Por favor (informal)" },
-  { id:16, cat:"Día a día",    nl:"Dank je wel",                      phonetic:"dank ye WEL",                   es:"Muchas gracias" },
-  { id:17, cat:"Día a día",    nl:"Dank u wel",                       phonetic:"dank ü WEL",                    es:"Muchas gracias (formal)" },
-  { id:18, cat:"Día a día",    nl:"Graag gedaan",                     phonetic:"jrAJ ghe-DAN",                  es:"De nada" },
-  { id:19, cat:"Día a día",    nl:"Sorry / Excuseer",                 phonetic:"SO-ri / eks-kü-SER",            es:"Lo siento / Disculpe" },
-  { id:20, cat:"Día a día",    nl:"Kunt u dat herhalen?",             phonetic:"künt ü dat her-HA-len",         es:"¿Puede repetirlo?",           tip:"Muy útil al principio" },
-  { id:21, cat:"Tiendas",      nl:"Hoeveel kost dit?",                phonetic:"hu-VEL kost dit",               es:"¿Cuánto cuesta esto?" },
-  { id:22, cat:"Tiendas",      nl:"Ik wil graag...",                  phonetic:"ik wil JRAX",                   es:"Quisiera..." },
-  { id:23, cat:"Tiendas",      nl:"De rekening, alsjeblieft",         phonetic:"de RE-ke-ning als-je-BLEFT",    es:"La cuenta, por favor" },
-  { id:24, cat:"Tiendas",      nl:"Een biertje, alsjeblieft",         phonetic:"en BIER-tye als-je-BLEFT",      es:"Una cerveza, por favor",      tip:"Jupiler y Stella Artois son marcas belgas" },
-  { id:25, cat:"Tiendas",      nl:"Smakelijk!",                       phonetic:"SMA-ke-lek",                    es:"¡Buen provecho!" },
-  { id:26, cat:"Tiendas",      nl:"Ik ben vegetariër",                phonetic:"ik ben ve-jhe-ta-RI-yer",       es:"Soy vegetariano/a" },
-  { id:27, cat:"Tiendas",      nl:"Heerlijk!",                        phonetic:"HER-lek",                       es:"¡Delicioso!",                 tip:"A los flamencos les encanta escuchar esto" },
-  { id:28, cat:"Transporte",   nl:"Waar is...?",                      phonetic:"var is",                        es:"¿Dónde está...?" },
-  { id:29, cat:"Transporte",   nl:"Het station",                      phonetic:"et sta-SION",                   es:"La estación de tren" },
-  { id:30, cat:"Transporte",   nl:"Links / Rechts / Rechtdoor",       phonetic:"links / rets / ret-DOR",        es:"Izquierda / Derecha / Recto" },
-  { id:31, cat:"Transporte",   nl:"Een ticket naar Gent, alsjeblieft",phonetic:"en TI-ket nar JENT",            es:"Un billete a Gante, por favor" },
-  { id:32, cat:"Transporte",   nl:"Is deze stoel vrij?",              phonetic:"is DE-ze stul VRY",             es:"¿Está libre este asiento?" },
-  { id:33, cat:"Emergencias",  nl:"Help!",                            phonetic:"HELP",                          es:"¡Ayuda!" },
-  { id:34, cat:"Emergencias",  nl:"Ik heb een dokter nodig",          phonetic:"ik hep en DOK-ter NO-dej",      es:"Necesito un médico" },
-  { id:35, cat:"Emergencias",  nl:"Bel de politie!",                  phonetic:"bel de po-LI-tsie",             es:"¡Llame a la policía!" },
-  { id:36, cat:"Emergencias",  nl:"Ik ben verdwaald",                 phonetic:"ik ben ver-DWALT",              es:"Estoy perdido/a" },
-  { id:37, cat:"Muy flamenco", nl:"Allez!",                           phonetic:"a-LE",                          es:"¡Vamos! / ¡Venga!",           tip:"Muy usado en Flandes, viene del francés" },
-  { id:38, cat:"Muy flamenco", nl:"Tjah...",                          phonetic:"tya",                           es:"Bueno... / Pues...",          tip:"Sonido reflexivo muy típico flamenco" },
-  { id:39, cat:"Muy flamenco", nl:"Niet te doen!",                    phonetic:"nit te DUN",                    es:"¡Increíble! / ¡De locos!",   tip:"Expresión muy flamenca" },
-  { id:40, cat:"Muy flamenco", nl:"Proficiat!",                       phonetic:"pro-fi-TSIAT",                  es:"¡Felicitaciones!",           tip:"Más usado en Flandes que 'gefeliciteerd'" },
+  // 1-10
+  { id:1,  cat:"Básicos (0-10)", nl:"nul", phonetic:"nül", es:"cero" },
+  { id:2,  cat:"Básicos (0-10)", nl:"een", phonetic:"en", es:"uno", tip:"La doble 'e' suena como una 'e' larga" },
+  { id:3,  cat:"Básicos (0-10)", nl:"twee", phonetic:"tve", es:"dos" },
+  { id:4,  cat:"Básicos (0-10)", nl:"drie", phonetic:"dri", es:"tres" },
+  { id:5,  cat:"Básicos (0-10)", nl:"vier", phonetic:"fir", es:"cuatro" },
+  { id:6,  cat:"Básicos (0-10)", nl:"vijf", phonetic:"veif", es:"cinco" },
+  { id:7,  cat:"Básicos (0-10)", nl:"zes", phonetic:"ses", es:"seis" },
+  { id:8,  cat:"Básicos (0-10)", nl:"zeven", phonetic:"SE-ven", es:"siete" },
+  { id:9,  cat:"Básicos (0-10)", nl:"acht", phonetic:"ajt", es:"ocho" },
+  { id:10, cat:"Básicos (0-10)", nl:"negen", phonetic:"NE-ghen", es:"nueve" },
+  { id:11, cat:"Básicos (0-10)", nl:"tien", phonetic:"tin", es:"diez" },
+
+  // 11-19
+  { id:12, cat:"Del 11 al 19", nl:"elf", phonetic:"elf", es:"once" },
+  { id:13, cat:"Del 11 al 19", nl:"twaalf", phonetic:"TVA-alf", es:"doce" },
+  { id:14, cat:"Del 11 al 19", nl:"dertien", phonetic:"DER-tin", es:"trece" },
+  { id:15, cat:"Del 11 al 19", nl:"veertien", phonetic:"VER-tin", es:"catorce" },
+  { id:16, cat:"Del 11 al 19", nl:"vijftien", phonetic:"VEIF-tin", es:"quince" },
+  { id:17, cat:"Del 11 al 19", nl:"zestien", phonetic:"SES-tin", es:"dieciséis" },
+  { id:18, cat:"Del 11 al 19", nl:"zeventien", phonetic:"SE-ven-tin", es:"diecisiete" },
+  { id:19, cat:"Del 11 al 19", nl:"achttien", phonetic:"AJ-tin", es:"dieciocho" },
+  { id:20, cat:"Del 11 al 19", nl:"negentien", phonetic:"NE-ghen-tin", es:"diecinueve" },
+
+  // Decenas
+  { id:21, cat:"Decenas", nl:"twintig", phonetic:"TVIN-tej", es:"veinte", tip:"La terminación '-ig' en Flandes suena parecido a '-ej'." },
+  { id:22, cat:"Decenas", nl:"dertig", phonetic:"DER-tej", es:"treinta" },
+  { id:23, cat:"Decenas", nl:"veertig", phonetic:"VER-tej", es:"cuarenta" },
+  { id:24, cat:"Decenas", nl:"vijftig", phonetic:"VEIF-tej", es:"cincuenta" },
+  { id:25, cat:"Decenas", nl:"zestig", phonetic:"SES-tej", es:"sesenta" },
+  { id:26, cat:"Decenas", nl:"zeventig", phonetic:"SE-ven-tej", es:"setenta" },
+  { id:27, cat:"Decenas", nl:"tachtig", phonetic:"TAJ-tej", es:"ochenta" },
+  { id:28, cat:"Decenas", nl:"negentig", phonetic:"NE-ghen-tej", es:"noventa" },
+
+  // Compuestos
+  { id:29, cat:"Compuestos", nl:"eenentwintig", phonetic:"en-en-TVIN-tej", es:"veintiuno", tip:"Literalmente: uno-y-veinte (se dicen al revés)" },
+  { id:30, cat:"Compuestos", nl:"tweeëndertig", phonetic:"tve-en-DER-tej", es:"treinta y dos" },
+  { id:31, cat:"Compuestos", nl:"vijfenveertig", phonetic:"veif-en-VER-tej", es:"cuarenta y cinco" },
+
+  // Centenas y miles
+  { id:32, cat:"Grandes", nl:"honderd", phonetic:"HON-dert", es:"cien/ciento" },
+  { id:33, cat:"Grandes", nl:"tweehonderd", phonetic:"tve-HON-dert", es:"doscientos" },
+  { id:34, cat:"Grandes", nl:"duizend", phonetic:"DOW-sent", es:"mil" },
+  { id:35, cat:"Grandes", nl:"een miljoen", phonetic:"en mil-YUN", es:"un millón" },
+
+  // Ordinales
+  { id:36, cat:"Ordinales", nl:"eerste", phonetic:"ERS-te", es:"primero" },
+  { id:37, cat:"Ordinales", nl:"tweede", phonetic:"TVE-de", es:"segundo" },
+  { id:38, cat:"Ordinales", nl:"derde", phonetic:"DER-de", es:"tercero", tip:"Excepción (no es 'drie-de')" },
+  { id:39, cat:"Ordinales", nl:"vierde", phonetic:"FIR-de", es:"cuarto" },
+  { id:40, cat:"Ordinales", nl:"vijfde", phonetic:"VEIF-de", es:"quinto" },
+
+  // Operaciones
+  { id:41, cat:"Operaciones", nl:"plus", phonetic:"plüs", es:"más (+)" },
+  { id:42, cat:"Operaciones", nl:"min", phonetic:"min", es:"menos (-)" },
+  { id:43, cat:"Operaciones", nl:"keer / maal", phonetic:"ker / mal", es:"por (x)" },
+  { id:44, cat:"Operaciones", nl:"gedeeld door", phonetic:"je-DELT dor", es:"dividido por (/)" },
+  { id:45, cat:"Operaciones", nl:"is", phonetic:"is", es:"es igual a (=)" }
 ];
 
-const CATS = ["Todas", ...new Set(PHRASES.map(p => p.cat))];
-let activeCat    = "Todas";
+const CATS = ["Todos", ...new Set(PHRASES.map(p => p.cat))];
+let activeCat    = "Todos";
 let searchTerm   = "";
 let currentAudio = null;
 let currentId    = null;
 
 // ── AUDIO: sistema híbrido móvil-primero ────────────────────────────────────
-//
-// ESTRATEGIA:
-// 1. En móvil Android usamos SpeechSynthesis (Web Speech API) directo —
-//    funciona porque el .speak() se llama sincrónicamente dentro del mismo
-//    evento touch, sin perder el contexto de gesto del usuario.
-// 2. Si SpeechSynthesis no tiene voz en neerlandés, usamos la misma API
-//    con cualquier voz disponible (igual se entiende la pronunciación).
-// 3. En desktop Brave donde Web Speech está bloqueada, usamos Google TTS
-//    vía fetch+blob: convertimos el MP3 a un blob URL local, lo que evita
-//    el bloqueo de autoplay de recursos externos.
-//
-// El truco clave del blob: en vez de new Audio(urlExterno).play() — que
-// Android bloquea porque el recurso tarda en cargar y se pierde el gesto —
-// hacemos fetch() del MP3, lo convertimos a blob:// local, y recién entonces
-// llamamos a audio.play(). Pero como fetch es async, igual pierde el gesto
-// en móvil. Por eso en móvil SpeechSynthesis es la mejor opción.
-
 const isMobile = /Android|iPhone|iPad/i.test(navigator.userAgent);
 
-// Pre-cargar voces (necesario en algunos navegadores)
 let voices = [];
 function loadVoices() {
   voices = window.speechSynthesis ? speechSynthesis.getVoices() : [];
@@ -507,7 +467,7 @@ function speakWithSpeechAPI(text, id) {
     if (e.error === 'interrupted') return;
     setPlaying(id, false);
     currentId = null;
-    speakWithGoogleTTS(text, id); // fallback a Google TTS
+    speakWithGoogleTTS(text, id); 
   };
 
   setPlaying(id, true);
@@ -518,7 +478,6 @@ function speakWithSpeechAPI(text, id) {
 function speakWithGoogleTTS(text, id) {
   const url = `https://translate.google.com/translate_tts?ie=UTF-8&q=${encodeURIComponent(text)}&tl=nl&client=tw-ob`;
 
-  // Usamos fetch → blob para evitar bloqueo de autoplay en recursos externos
   fetch(url)
     .then(r => r.blob())
     .then(blob => {
@@ -550,7 +509,6 @@ function speak(id) {
   const phrase = PHRASES.find(p => p.id === id);
   if (!phrase) return;
 
-  // Clic en el mismo → detener
   if (currentId === id) {
     stopAudio();
     return;
@@ -560,8 +518,6 @@ function speak(id) {
   currentId = id;
   setPlaying(id, true);
 
-  // En móvil: SpeechSynthesis directa (funciona dentro del gesto touch)
-  // En desktop: Google TTS via fetch→blob
   if (isMobile && window.speechSynthesis) {
     speakWithSpeechAPI(phrase.nl, id);
   } else if (window.speechSynthesis && voices.length > 0) {
@@ -616,7 +572,7 @@ function setCategory(cat) {
 
 function getFiltered() {
   return PHRASES.filter(p => {
-    const matchCat    = activeCat === "Todas" || p.cat === activeCat;
+    const matchCat    = activeCat === "Todos" || p.cat === activeCat;
     const q           = searchTerm.toLowerCase();
     const matchSearch = !q || p.nl.toLowerCase().includes(q) || p.es.toLowerCase().includes(q);
     return matchCat && matchSearch;
@@ -635,11 +591,11 @@ function renderPhrases() {
   const content  = document.getElementById("main-content");
 
   if (!filtered.length) {
-    content.innerHTML = '<div class="empty">No se encontraron frases. Probá con otra búsqueda.</div>';
+    content.innerHTML = '<div class="empty">No se encontraron números. Probá con otra búsqueda.</div>';
     return;
   }
 
-  const grouped = activeCat === "Todas"
+  const grouped = activeCat === "Todos"
     ? groupBy(filtered, "cat")
     : { [activeCat]: filtered };
 
@@ -647,7 +603,7 @@ function renderPhrases() {
   Object.entries(grouped).forEach(([cat, phrases]) => {
     html += `<div class="section-header">
       <span class="section-title">${cat}</span>
-      <span class="section-count">${phrases.length} frase${phrases.length !== 1 ? 's' : ''}</span>
+      <span class="section-count">${phrases.length} ítem${phrases.length !== 1 ? 's' : ''}</span>
     </div><div class="phrases-grid">`;
 
     phrases.forEach((p, i) => {

@@ -1,321 +1,556 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Leer Vlaams — Aprendé neerlandés flamenco</title>
-<style>
-  :root {
-    --bg: #0A0A0F;
-    --surface: #13131A;
-    --surface2: #1C1C26;
-    --border: rgba(255,255,255,0.07);
-    --text: #EEEAF2;
-    --muted: #6B6880;
-    --gold: #C9A84C;
-    --gold2: #E8C97A;
-    --purple: #7B5EA7;
-    --green: #3DAA6E;
-    --blue: #3A7FD5;
-  }
-  html.light {
-    --bg: #F2F0F7;
-    --surface: #FFFFFF;
-    --surface2: #ECEAF4;
-    --border: rgba(0,0,0,0.08);
-    --text: #16131F;
-    --muted: #7A7590;
-    --gold: #9A7220;
-    --gold2: #B08830;
-  }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Leer Vlaams — Aprendé neerlandés flamenco</title>
+  <style>
+    :root {
+      --bg: #0F172A;
+      --surface: #1E293B;
+      --surface2: #334155;
+      --border: rgba(255, 255, 255, 0.1);
+      --text: #F8FAFC;
+      --muted: #94A3B8;
+      --gold: #F59E0B;
+      --gold2: #FBBF24;
+      --purple: #8B5CF6;
+      --green: #10B981;
+      --blue: #3B82F6;
+    }
 
-  * { margin:0; padding:0; box-sizing:border-box; }
+    html.light {
+      --bg: #F8FAFC;
+      --surface: #FFFFFF;
+      --surface2: #F1F5F9;
+      --border: rgba(0, 0, 0, 0.1);
+      --text: #0F172A;
+      --muted: #64748B;
+      --gold: #D97706;
+      --gold2: #F59E0B;
+    }
 
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: system-ui, -apple-system, Arial, sans-serif;
-    min-height: 100vh;
-    transition: background 0.3s, color 0.3s;
-  }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-  /* Background pattern */
-  body::before {
-    content:'';
-    position:fixed; inset:0;
-    background:
-      radial-gradient(ellipse 60% 40% at 10% 90%, rgba(123,94,167,0.08) 0%, transparent 60%),
-      radial-gradient(ellipse 50% 50% at 90% 10%, rgba(201,168,76,0.06) 0%, transparent 60%);
-    pointer-events:none; z-index:0;
-  }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: system-ui, -apple-system, Arial, sans-serif;
+      font-size: 17px;
+      min-height: 100vh;
+      transition: background 0.3s, color 0.3s;
+    }
 
-  .wrap { max-width:960px; margin:0 auto; padding:0 24px; position:relative; z-index:1; }
+    /* Background pattern */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 60% 40% at 10% 90%, rgba(123, 94, 167, 0.08) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 50% at 90% 10%, rgba(201, 168, 76, 0.06) 0%, transparent 60%);
+      pointer-events: none;
+      z-index: 0;
+    }
 
-  /* NAV */
-  nav {
-    display:flex; align-items:center; justify-content:space-between;
-    padding:20px 0; border-bottom:0.5px solid var(--border);
-    margin-bottom:60px;
-  }
-  .nav-logo {
-    font-size:13px; font-weight:700; letter-spacing:0.15em;
-    text-transform:uppercase; color:var(--gold);
-  }
-  .nav-logo span { color:var(--muted); font-weight:400; }
-  .theme-toggle {
-    width:40px; height:24px; border-radius:12px;
-    border:1px solid var(--border); background:var(--surface2);
-    cursor:pointer; position:relative; transition:0.25s; padding:0;
-  }
-  .theme-toggle::after {
-    content:''; position:absolute; top:4px; left:4px;
-    width:13px; height:13px; border-radius:50%;
-    background:var(--gold); transition:transform 0.25s;
-  }
-  html.light .theme-toggle::after { transform:translateX(16px); }
+    .wrap {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0 24px;
+      position: relative;
+      z-index: 1;
+    }
 
-  /* HERO */
-  .hero { text-align:center; padding:0 0 72px; }
-  .hero-flag {
-    font-size:48px; margin-bottom:20px;
-    filter:drop-shadow(0 4px 16px rgba(201,168,76,0.3));
-  }
-  .hero-eyebrow {
-    font-size:11px; font-weight:600; letter-spacing:0.2em;
-    text-transform:uppercase; color:var(--gold);
-    margin-bottom:16px;
-  }
-  .hero h1 {
-    font-size:clamp(36px,6vw,64px);
-    font-weight:800; line-height:1.05;
-    letter-spacing:-0.03em;
-    margin-bottom:16px;
-  }
-  .hero h1 em { font-style:normal; color:var(--gold); }
-  .hero-sub {
-    font-size:16px; color:var(--muted); max-width:500px; margin:0 auto 8px;
-    line-height:1.6;
-  }
+    /* NAV */
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 0;
+      border-bottom: 0.5px solid var(--border);
+      margin-bottom: 60px;
+    }
 
-  /* PROGRESS BAR */
-  .progress-wrap { max-width:400px; margin:40px auto 0; }
-  .progress-label {
-    display:flex; justify-content:space-between;
-    font-size:12px; color:var(--muted); margin-bottom:8px;
-  }
-  .progress-track {
-    height:4px; background:var(--surface2);
-    border-radius:2px; overflow:hidden;
-  }
-  .progress-fill {
-    height:100%; background:linear-gradient(90deg, var(--gold), var(--gold2));
-    border-radius:2px;
-    transition:width 0.8s cubic-bezier(0.4,0,0.2,1);
-  }
+    .nav-logo {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
 
-  /* MODULES GRID */
-  .modules-header {
-    display:flex; align-items:center; gap:12px; margin-bottom:28px;
-  }
-  .modules-title { font-size:13px; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; color:var(--muted); }
+    .nav-logo span {
+      color: var(--muted);
+      font-weight: 400;
+    }
 
-  .grid {
-    display:grid;
-    grid-template-columns:repeat(auto-fill, minmax(260px, 1fr));
-    gap:16px;
-    margin-bottom:80px;
-  }
+    .theme-toggle {
+      width: 40px;
+      height: 24px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: var(--surface2);
+      cursor: pointer;
+      position: relative;
+      transition: 0.25s;
+      padding: 0;
+    }
 
-  /* MODULE CARD */
-  .card {
-    background:var(--surface);
-    border:0.5px solid var(--border);
-    border-radius:16px;
-    padding:24px;
-    text-decoration:none;
-    color:inherit;
-    display:flex; flex-direction:column; gap:16px;
-    transition:border-color 0.2s, transform 0.2s, box-shadow 0.2s;
-    position:relative; overflow:hidden;
-  }
-  .card::before {
-    content:''; position:absolute; inset:0;
-    background:linear-gradient(135deg, var(--card-color, rgba(201,168,76,0.04)) 0%, transparent 60%);
-    pointer-events:none;
-  }
-  .card:hover {
-    border-color:var(--card-color, var(--gold));
-    transform:translateY(-2px);
-    box-shadow:0 8px 32px rgba(0,0,0,0.2);
-  }
-  .card.locked { opacity:0.45; pointer-events:none; }
-  .card.locked .card-status { background:var(--surface2); color:var(--muted); }
+    .theme-toggle::after {
+      content: '';
+      position: absolute;
+      top: 4px;
+      left: 4px;
+      width: 13px;
+      height: 13px;
+      border-radius: 50%;
+      background: var(--gold);
+      transition: transform 0.25s;
+    }
 
-  .card-top { display:flex; align-items:flex-start; justify-content:space-between; gap:8px; }
-  .card-icon { font-size:28px; line-height:1; }
-  .card-status {
-    font-size:10px; font-weight:700; letter-spacing:0.1em;
-    text-transform:uppercase; padding:4px 10px; border-radius:100px;
-    white-space:nowrap;
-  }
-  .status-active { background:rgba(201,168,76,0.15); color:var(--gold2); }
-  .status-soon   { background:var(--surface2); color:var(--muted); }
-  .status-done   { background:rgba(61,170,110,0.15); color:var(--green); }
+    html.light .theme-toggle::after {
+      transform: translateX(16px);
+    }
 
-  .card-title { font-size:18px; font-weight:700; line-height:1.2; }
-  .card-desc  { font-size:13px; color:var(--muted); line-height:1.5; flex:1; }
+    /* HERO */
+    .hero {
+      text-align: center;
+      padding: 0 0 72px;
+    }
 
-  .card-meta {
-    display:flex; align-items:center; gap:12px;
-    font-size:12px; color:var(--muted); margin-top:auto;
-    padding-top:14px; border-top:0.5px solid var(--border);
-  }
-  .card-meta span { display:flex; align-items:center; gap:4px; }
+    .hero-flag {
+      font-size: 48px;
+      margin-bottom: 20px;
+      filter: drop-shadow(0 4px 16px rgba(201, 168, 76, 0.3));
+    }
 
-  .card-progress { margin-top:0; }
-  .card-progress-track {
-    height:3px; background:var(--surface2); border-radius:2px; overflow:hidden;
-  }
-  .card-progress-fill {
-    height:100%; border-radius:2px;
-    background:linear-gradient(90deg, var(--gold), var(--gold2));
-  }
+    .hero-eyebrow {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 16px;
+    }
 
-  /* SUBMODULE ROW (inside active card) */
-  .card-links {
-    display:flex; flex-direction:column; gap:6px;
-    padding-top:12px; border-top:0.5px solid var(--border);
-  }
-  .card-link {
-    display:flex; align-items:center; gap:10px;
-    padding:8px 10px; border-radius:8px;
-    text-decoration:none; color:inherit;
-    font-size:13px; font-weight:500;
-    transition:background 0.15s;
-  }
-  .card-link:hover { background:var(--surface2); }
-  .card-link-icon {
-    width:28px; height:28px; border-radius:7px;
-    display:flex; align-items:center; justify-content:center;
-    font-size:14px; flex-shrink:0;
-  }
-  .card-link-arrow { margin-left:auto; color:var(--muted); font-size:12px; }
+    .hero h1 {
+      font-size: clamp(36px, 6vw, 64px);
+      font-weight: 800;
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+      margin-bottom: 16px;
+    }
 
-  /* FOOTER */
-  footer {
-    border-top:0.5px solid var(--border);
-    padding:24px 0;
-    text-align:center;
-    font-size:12px; color:var(--muted);
-    letter-spacing:0.05em;
-  }
-  footer strong { color:var(--gold); font-weight:600; }
+    .hero h1 em {
+      font-style: normal;
+      color: var(--gold);
+    }
 
-  /* RESPONSIVE */
-  @media(max-width:600px){
-    nav { margin-bottom:40px; }
-    .hero { padding-bottom:48px; }
-    .hero-flag { font-size:36px; }
-    .grid { grid-template-columns:1fr; gap:12px; }
-    .card { padding:18px; }
-  }
+    .hero-sub {
+      font-size: 16px;
+      color: var(--muted);
+      max-width: 500px;
+      margin: 0 auto 8px;
+      line-height: 1.6;
+    }
 
-  /* Staggered entrance */
-  @keyframes fadeUp {
-    from { opacity:0; transform:translateY(16px); }
-    to   { opacity:1; transform:translateY(0); }
-  }
-  .card { animation:fadeUp 0.4s ease both; }
-</style>
+    /* PROGRESS BAR */
+    .progress-wrap {
+      max-width: 400px;
+      margin: 40px auto 0;
+    }
+
+    .progress-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+
+    .progress-track {
+      height: 4px;
+      background: var(--surface2);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--gold), var(--gold2));
+      border-radius: 2px;
+      transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* MODULES GRID */
+    .modules-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 28px;
+    }
+
+    .modules-title {
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 16px;
+      margin-bottom: 80px;
+    }
+
+    /* MODULE CARD */
+    .card {
+      background: var(--surface);
+      border: 0.5px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+      text-decoration: none;
+      color: inherit;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, var(--card-color, rgba(201, 168, 76, 0.04)) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    .card:hover {
+      border-color: var(--card-color, var(--gold));
+      transform: translateY(-2px);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    }
+
+    .card.locked {
+      opacity: 0.45;
+      pointer-events: none;
+    }
+
+    .card.locked .card-status {
+      background: var(--surface2);
+      color: var(--muted);
+    }
+
+    .card-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .card-icon {
+      font-size: 28px;
+      line-height: 1;
+    }
+
+    .card-status {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 100px;
+      white-space: nowrap;
+    }
+
+    .status-active {
+      background: rgba(201, 168, 76, 0.15);
+      color: var(--gold2);
+    }
+
+    .status-soon {
+      background: var(--surface2);
+      color: var(--muted);
+    }
+
+    .status-done {
+      background: rgba(61, 170, 110, 0.15);
+      color: var(--green);
+    }
+
+    .card-title {
+      font-size: 18px;
+      font-weight: 700;
+      line-height: 1.2;
+    }
+
+    .card-desc {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.5;
+      flex: 1;
+    }
+
+    .card-meta {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: auto;
+      padding-top: 14px;
+      border-top: 0.5px solid var(--border);
+    }
+
+    .card-meta span {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .card-progress {
+      margin-top: 0;
+    }
+
+    .card-progress-track {
+      height: 3px;
+      background: var(--surface2);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+
+    .card-progress-fill {
+      height: 100%;
+      border-radius: 2px;
+      background: linear-gradient(90deg, var(--gold), var(--gold2));
+    }
+
+    /* SUBMODULE ROW (inside active card) */
+    .card-links {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      padding-top: 12px;
+      border-top: 0.5px solid var(--border);
+    }
+
+    .card-link {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 10px;
+      border-radius: 8px;
+      text-decoration: none;
+      color: inherit;
+      font-size: 13px;
+      font-weight: 500;
+      transition: background 0.15s;
+    }
+
+    .card-link:hover {
+      background: var(--surface2);
+    }
+
+    .card-link-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 7px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      flex-shrink: 0;
+    }
+
+    .card-link-arrow {
+      margin-left: auto;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    /* FOOTER */
+    footer {
+      border-top: 0.5px solid var(--border);
+      padding: 24px 0;
+      text-align: center;
+      font-size: 12px;
+      color: var(--muted);
+      letter-spacing: 0.05em;
+    }
+
+    footer strong {
+      color: var(--gold);
+      font-weight: 600;
+    }
+
+    /* RESPONSIVE */
+    @media(max-width:600px) {
+      nav {
+        margin-bottom: 40px;
+      }
+
+      .hero {
+        padding-bottom: 48px;
+      }
+
+      .hero-flag {
+        font-size: 36px;
+      }
+
+      .grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+
+      .card {
+        padding: 18px;
+      }
+    }
+
+    /* Staggered entrance */
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(16px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .card {
+      animation: fadeUp 0.4s ease both;
+    }
+  </style>
 </head>
+
 <body>
 
-<div class="wrap">
-  <nav>
-    <div class="nav-logo">Leer <span>Vlaams</span></div>
-    <button class="theme-toggle" onclick="toggleTheme()" title="Cambiar tema"></button>
-  </nav>
+  <div class="wrap">
+    <nav>
+      <div class="nav-logo">Leer <span>Vlaams</span></div>
+      <button class="theme-toggle" onclick="toggleTheme()" title="Cambiar tema"></button>
+    </nav>
 
-  <div class="hero">
-    <div class="hero-flag">🇧🇪</div>
-    <div class="hero-eyebrow">Neerlandés · Flandes · Bélgica</div>
-    <h1>Aprendé a hablar<br><em>Vlaams</em></h1>
-    <p class="hero-sub">Un curso completo de neerlandés flamenco organizado por temas del día a día. Cada módulo tiene frases, pronunciación y ejercicios.</p>
+    <div class="hero">
+      <div class="hero-flag">🇧🇪</div>
+      <div class="hero-eyebrow">Neerlandés · Flandes · Bélgica</div>
+      <h1>Aprendé a hablar<br><em>Vlaams</em></h1>
+      <p class="hero-sub">Un curso completo de neerlandés flamenco organizado por temas del día a día. Cada módulo tiene
+        frases, pronunciación y ejercicios.</p>
 
-    <div class="progress-wrap">
-      <div class="progress-label">
-        <span>Tu progreso general</span>
-        <span id="progressPct">0%</span>
-      </div>
-      <div class="progress-track">
-        <div class="progress-fill" id="progressFill" style="width:0%"></div>
-      </div>
-    </div>
-  </div>
-
-  <div class="modules-header">
-    <div class="modules-title">Módulos</div>
-  </div>
-
-  <div class="grid">
-
-    <!-- ACTIVO -->
-    <div class="card" style="--card-color:rgba(201,168,76,0.25); animation-delay:0.05s">
-      <div class="card-top">
-        <div class="card-icon">💬</div>
-        <span class="card-status status-active">En curso</span>
-      </div>
-      <div class="card-title">Frases esenciales</div>
-      <div class="card-desc">Saludos, presentaciones, día a día, tiendas, transporte, emergencias y expresiones muy flamencas.</div>
-      <div class="card-links">
-        <a class="card-link" href="frases/frases.html">
-          <div class="card-link-icon" style="background:rgba(201,168,76,0.12); color:var(--gold)">📖</div>
-          <span>Aprender frases</span>
-          <span class="card-link-arrow">→</span>
-        </a>
-        <a class="card-link" href="frases/ejercicios.html">
-          <div class="card-link-icon" style="background:rgba(61,170,110,0.12); color:var(--green)">🎮</div>
-          <span>Ejercicios y juegos</span>
-          <span class="card-link-arrow">→</span>
-        </a>
-      </div>
-      <div class="card-meta">
-        <span>📝 40 frases</span>
-        <span>🎮 30+ ejercicios</span>
+      <div class="progress-wrap">
+        <div class="progress-label">
+          <span>Tu progreso general</span>
+          <span id="progressPct">0%</span>
+        </div>
+        <div class="progress-track">
+          <div class="progress-fill" id="progressFill" style="width:0%"></div>
+        </div>
       </div>
     </div>
 
-    <!-- PRÓXIMOS (locked) -->
-    <script>
-    const upcoming = [
-      { icon:"🔢", title:"Números",           desc:"Del 1 al 1000, ordinales, fechas y operaciones básicas." },
-      { icon:"💶", title:"Dinero",             desc:"Precios, pagos, bancos y expresiones sobre dinero." },
-      { icon:"🛍️", title:"Compras",            desc:"Ropa, tallas, devoluciones y negociar precios." },
-      { icon:"🛒", title:"Supermercado",       desc:"Alimentos, secciones, unidades de medida y recetas." },
-      { icon:"👨‍👩‍👧", title:"Familia",         desc:"Parentescos, relaciones y presentar a tu familia." },
-      { icon:"✈️", title:"Viajes",             desc:"Aeropuerto, hotel, turismo y pedir direcciones." },
-      { icon:"🍽️", title:"Comidas",            desc:"Platos típicos belgas, pedir en restaurante y recetas." },
-      { icon:"🎨", title:"Hobbies",            desc:"Deportes, arte, lectura y actividades de tiempo libre." },
-      { icon:"🏠", title:"Casa",               desc:"Habitaciones, muebles, alquiler y vida hogareña." },
-      { icon:"💼", title:"Trabajo",            desc:"Profesiones, entrevistas, oficina y reuniones." },
-      { icon:"🌦️", title:"Clima",              desc:"Estaciones, pronóstico y frases sobre el tiempo." },
-      { icon:"🚿", title:"Baño",               desc:"Rutinas, higiene personal y vocabulario del baño." },
-      { icon:"🍳", title:"Cocina",             desc:"Utensilios, técnicas de cocción y recetas paso a paso." },
-      { icon:"🗺️", title:"Encontrar lugares",  desc:"Calles, GPS, landmarks y orientación en la ciudad." },
-      { icon:"👗", title:"Ropa",               desc:"Prendas, colores, tallas y moda flamenca." },
-      { icon:"🎨", title:"Colores",            desc:"Colores básicos, matices y usarlos en contexto." },
-      { icon:"🏥", title:"Hospital",           desc:"Síntomas, consultas médicas y emergencias." },
-      { icon:"🫀", title:"Cuerpo",             desc:"Partes del cuerpo, dolores y descripción física." },
-      { icon:"❤️‍🩹", title:"Salud",            desc:"Bienestar, medicamentos y hábitos saludables." },
-      { icon:"📄", title:"Búsqueda de trabajo",desc:"CV, entrevistas y vocabulario laboral en Bélgica." },
-      { icon:"⛪", title:"Religión",           desc:"Fiestas religiosas, vocabulario y vida espiritual." },
-      { icon:"🗳️", title:"Política",          desc:"Sistema belga, partidos y vocabulario cívico." },
-      { icon:"⚽", title:"Deportes",           desc:"Fútbol, ciclismo, deportes típicos y resultados." },
-      { icon:"🎲", title:"Juegos",             desc:"Juegos de mesa, cartas y entretenimiento." },
-      { icon:"🎵", title:"Música",             desc:"Géneros, instrumentos y la escena musical flamenca." },
-    ];
-    document.write(upcoming.map((m, i) =>
-      `<div class="card locked" style="animation-delay:${(i+1)*0.04}s">
+    <div class="modules-header">
+      <div class="modules-title">Módulos</div>
+    </div>
+
+    <div class="grid">
+
+      <!-- ACTIVO -->
+      <div class="card" style="--card-color:rgba(245, 158, 11, 0.25); animation-delay:0.05s">
+        <div class="card-top">
+          <div class="card-icon">💬</div>
+          <span class="card-status status-active">En curso</span>
+        </div>
+        <div class="card-title">Frases esenciales</div>
+        <div class="card-desc">Saludos, presentaciones, día a día, tiendas, transporte, emergencias y expresiones muy
+          flamencas.</div>
+        <div class="card-links">
+          <a class="card-link" href="frases/frases.html">
+            <div class="card-link-icon" style="background:rgba(245, 158, 11, 0.12); color:var(--gold)">📖</div>
+            <span>Aprender frases</span>
+            <span class="card-link-arrow">→</span>
+          </a>
+          <a class="card-link" href="frases/ejercicios.html">
+            <div class="card-link-icon" style="background:rgba(16, 185, 129, 0.12); color:var(--green)">🎮</div>
+            <span>Ejercicios y juegos</span>
+            <span class="card-link-arrow">→</span>
+          </a>
+        </div>
+        <div class="card-meta">
+          <span>📝 40 frases</span>
+          <span>🎮 32 ejercicios</span>
+        </div>
+      </div>
+
+      <!-- NÚMEROS -->
+      <div class="card" style="--card-color:rgba(59, 130, 246, 0.25); animation-delay:0.1s">
+        <div class="card-top">
+          <div class="card-icon">🔢</div>
+          <span class="card-status status-active" style="background:rgba(59, 130, 246, 0.15); color:var(--blue);">En
+            curso</span>
+        </div>
+        <div class="card-title">Números</div>
+        <div class="card-desc">Del 1 al 1000, ordinales, fechas y operaciones básicas.</div>
+        <div class="card-links">
+          <a class="card-link" href="numeros/numeros.html">
+            <div class="card-link-icon" style="background:rgba(59, 130, 246, 0.12); color:var(--blue)">📖</div>
+            <span>Aprender números</span>
+            <span class="card-link-arrow">→</span>
+          </a>
+          <a class="card-link" href="numeros/ejercicios.html">
+            <div class="card-link-icon" style="background:rgba(16, 185, 129, 0.12); color:var(--green)">🎮</div>
+            <span>Ejercicios y juegos</span>
+            <span class="card-link-arrow">→</span>
+          </a>
+        </div>
+        <div class="card-meta">
+          <span>📝 40 números</span>
+          <span>🎮 15 ejercicios</span>
+        </div>
+      </div>
+
+      <!-- PRÓXIMOS (locked) -->
+      <script>
+        const upcoming = [
+          { icon: "💶", title: "Dinero", desc: "Precios, pagos, bancos y expresiones sobre dinero." },
+          { icon: "🛍️", title: "Compras", desc: "Ropa, tallas, devoluciones y negociar precios." },
+          { icon: "🛒", title: "Supermercado", desc: "Alimentos, secciones, unidades de medida y recetas." },
+          { icon: "👨‍👩‍👧", title: "Familia", desc: "Parentescos, relaciones y presentar a tu familia." },
+          { icon: "✈️", title: "Viajes", desc: "Aeropuerto, hotel, turismo y pedir direcciones." },
+          { icon: "🍽️", title: "Comidas", desc: "Platos típicos belgas, pedir en restaurante y recetas." },
+          { icon: "🎨", title: "Hobbies", desc: "Deportes, arte, lectura y actividades de tiempo libre." },
+          { icon: "🏠", title: "Casa", desc: "Habitaciones, muebles, alquiler y vida hogareña." },
+          { icon: "💼", title: "Trabajo", desc: "Profesiones, entrevistas, oficina y reuniones." },
+          { icon: "🌦️", title: "Clima", desc: "Estaciones, pronóstico y frases sobre el tiempo." },
+          { icon: "🚿", title: "Baño", desc: "Rutinas, higiene personal y vocabulario del baño." },
+          { icon: "🍳", title: "Cocina", desc: "Utensilios, técnicas de cocción y recetas paso a paso." },
+          { icon: "🗺️", title: "Encontrar lugares", desc: "Calles, GPS, landmarks y orientación en la ciudad." },
+          { icon: "👗", title: "Ropa", desc: "Prendas, colores, tallas y moda flamenca." },
+          { icon: "🎨", title: "Colores", desc: "Colores básicos, matices y usarlos en contexto." },
+          { icon: "🏥", title: "Hospital", desc: "Síntomas, consultas médicas y emergencias." },
+          { icon: "🫀", title: "Cuerpo", desc: "Partes del cuerpo, dolores y descripción física." },
+          { icon: "❤️‍🩹", title: "Salud", desc: "Bienestar, medicamentos y hábitos saludables." },
+          { icon: "📄", title: "Búsqueda de trabajo", desc: "CV, entrevistas y vocabulario laboral en Bélgica." },
+          { icon: "⛪", title: "Religión", desc: "Fiestas religiosas, vocabulario y vida espiritual." },
+          { icon: "🗳️", title: "Política", desc: "Sistema belga, partidos y vocabulario cívico." },
+          { icon: "⚽", title: "Deportes", desc: "Fútbol, ciclismo, deportes típicos y resultados." },
+          { icon: "🎲", title: "Juegos", desc: "Juegos de mesa, cartas y entretenimiento." },
+          { icon: "🎵", title: "Música", desc: "Géneros, instrumentos y la escena musical flamenca." },
+        ];
+        document.write(upcoming.map((m, i) =>
+          `<div class="card locked" style="animation-delay:${(i + 1) * 0.04}s">
         <div class="card-top">
           <div class="card-icon">${m.icon}</div>
           <span class="card-status status-soon">Próximamente</span>
@@ -324,30 +559,31 @@
         <div class="card-desc">${m.desc}</div>
         <div class="card-meta"><span>🔒 Disponible pronto</span></div>
       </div>`
-    ).join(''));
-    </script>
+        ).join(''));
+      </script>
+    </div>
+
   </div>
 
-</div>
+  <footer>
+    <p>Leer Vlaams · <strong>Frases esenciales</strong> · Plan de estudios en progreso</p>
+  </footer>
 
-<footer>
-  <p>Leer Vlaams · <strong>Frases esenciales</strong> · Plan de estudios en progreso</p>
-</footer>
+  <script>
+    function toggleTheme() {
+      document.documentElement.classList.toggle('light');
+    }
 
-<script>
-function toggleTheme() {
-  document.documentElement.classList.toggle('light');
-}
-
-// Simular progreso basado en sessionStorage (ejercicios completados)
-function updateProgress() {
-  const done = parseInt(sessionStorage.getItem('exercisesDone') || '0');
-  const total = 30;
-  const pct = Math.min(100, Math.round((done / total) * 100));
-  document.getElementById('progressFill').style.width = pct + '%';
-  document.getElementById('progressPct').textContent = pct + '%';
-}
-updateProgress();
-</script>
+    // Simular progreso basado en sessionStorage (ejercicios completados)
+    function updateProgress() {
+      const done = parseInt(sessionStorage.getItem('exercisesDone') || '0');
+      const total = 30;
+      const pct = Math.min(100, Math.round((done / total) * 100));
+      document.getElementById('progressFill').style.width = pct + '%';
+      document.getElementById('progressPct').textContent = pct + '%';
+    }
+    updateProgress();
+  </script>
 </body>
+
 </html>
