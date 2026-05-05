@@ -608,10 +608,11 @@ function selectMatch(id, side, idx) {
 
   if (leftIdx === rightOrig) {
     // Match ok
-    document.getElementById(`ml${id}-${leftIdx}`).classList.replace('selected','matched');
-    rightEl.classList.replace('selected','matched');
-    if(side === 'right') document.getElementById(`ml${id}-${leftIdx}`).classList.add('matched');
-    else rightEl.classList.add('matched');
+    const leftEl = document.getElementById(`ml${id}-${leftIdx}`);
+    leftEl.classList.remove('selected');
+    leftEl.classList.add('matched');
+    rightEl.classList.remove('selected');
+    rightEl.classList.add('matched');
     
     state.matched++;
     if (state.matched === state.total) {
