@@ -169,13 +169,13 @@ html.light .theme-toggle::after{transform:translateX(16px);}
 
 <div class="page-header">
   <h1>Practicá <span>Vlaams</span></h1>
-  <p>15 ejercicios interactivos para dominar los números en neerlandés flamenco</p>
+  <p>32 ejercicios interactivos para dominar los números en neerlandés flamenco</p>
 </div>
 
 <div class="progress-bar-wrap">
   <div class="progress-stats">
     <div class="progress-stat"><div class="n" id="doneCount">0</div><div class="l">resueltos</div></div>
-    <div class="progress-stat"><div class="n">15</div><div class="l">total</div></div>
+    <div class="progress-stat"><div class="n">32</div><div class="l">total</div></div>
   </div>
   <div class="progress-track-wrap">
     <div class="progress-label-row"><span>Progreso</span><span id="pctLabel">0%</span></div>
@@ -228,6 +228,58 @@ html.light .theme-toggle::after{transform:translateX(16px);}
   <div class="feedback" id="ex3-fb"></div>
 </div>
 
+<!-- EX 16 -->
+<div class="ex-card" id="ex16">
+  <div class="ex-num">Ejercicio 16</div>
+  <div class="ex-q">¿Cómo se dice "siete" en neerlandés?</div>
+  <div class="options cols2" id="ex16-opts">
+    <button class="opt" onclick="checkMC(16,'zes','zeven')">zes</button>
+    <button class="opt" onclick="checkMC(16,'zeven','zeven')">zeven</button>
+    <button class="opt" onclick="checkMC(16,'negen','zeven')">negen</button>
+    <button class="opt" onclick="checkMC(16,'tien','zeven')">tien</button>
+  </div>
+  <div class="feedback" id="ex16-fb"></div>
+</div>
+
+<!-- EX 17 -->
+<div class="ex-card" id="ex17">
+  <div class="ex-num">Ejercicio 17</div>
+  <div class="ex-q">¿Qué número es "dertien"?</div>
+  <div class="options cols2" id="ex17-opts">
+    <button class="opt" onclick="checkMC(17,'30','13')">30 (treinta)</button>
+    <button class="opt" onclick="checkMC(17,'3','13')">3 (tres)</button>
+    <button class="opt" onclick="checkMC(17,'13','13')">13 (trece)</button>
+    <button class="opt" onclick="checkMC(17,'14','13')">14 (catorce)</button>
+  </div>
+  <div class="feedback" id="ex17-fb"></div>
+</div>
+
+<!-- EX 18 -->
+<div class="ex-card" id="ex18">
+  <div class="ex-num">Ejercicio 18</div>
+  <div class="ex-q">¿Qué significa "vijftig"?</div>
+  <div class="options cols2" id="ex18-opts">
+    <button class="opt" onclick="checkMC(18,'quince','cincuenta')">Quince</button>
+    <button class="opt" onclick="checkMC(18,'cinco','cincuenta')">Cinco</button>
+    <button class="opt" onclick="checkMC(18,'cincuenta','cincuenta')">Cincuenta</button>
+    <button class="opt" onclick="checkMC(18,'cien','cincuenta')">Cien</button>
+  </div>
+  <div class="feedback" id="ex18-fb"></div>
+</div>
+
+<!-- EX 32 -->
+<div class="ex-card" id="ex32">
+  <div class="ex-num">Ejercicio 32</div>
+  <div class="ex-q">¿Cómo se dice "cincuenta y cuatro"?</div>
+  <div class="options cols2" id="ex32-opts">
+    <button class="opt" onclick="checkMC(32,'veertig en vijf','vier en vijftig')">veertig en vijf</button>
+    <button class="opt" onclick="checkMC(32,'vier en vijftig','vier en vijftig')">vier en vijftig</button>
+    <button class="opt" onclick="checkMC(32,'vijftig en vier','vier en vijftig')">vijftig en vier</button>
+    <button class="opt" onclick="checkMC(32,'vijf en veertig','vier en vijftig')">vijf en veertig</button>
+  </div>
+  <div class="feedback" id="ex32-fb"></div>
+</div>
+
 </div><!-- /section -->
 
 <!-- ═══════════════════════════════════════════════════════════
@@ -254,6 +306,24 @@ html.light .theme-toggle::after{transform:translateX(16px);}
   <div class="feedback" id="ex5-fb"></div>
 </div>
 
+<!-- EX 19 -->
+<div class="ex-card" id="ex19">
+  <div class="ex-num">Ejercicio 19</div>
+  <div class="ex-q">Completá la secuencia (de diez en diez):</div>
+  <div class="fill-sentence">tien, twintig, <input class="fill-input" id="fill19" placeholder="___">, veertig</div>
+  <button class="check-btn" onclick="checkFill(19,'dertig')">Verificar</button>
+  <div class="feedback" id="ex19-fb"></div>
+</div>
+
+<!-- EX 20 -->
+<div class="ex-card" id="ex20">
+  <div class="ex-num">Ejercicio 20</div>
+  <div class="ex-q">Completá la secuencia:</div>
+  <div class="fill-sentence">vijftien, zestien, <input class="fill-input" id="fill20" placeholder="___">, achttien</div>
+  <button class="check-btn" onclick="checkFill(20,'zeventien')">Verificar</button>
+  <div class="feedback" id="ex20-fb"></div>
+</div>
+
 </div><!-- /section -->
 
 <!-- ═══════════════════════════════════════════════════════════
@@ -274,6 +344,30 @@ html.light .theme-toggle::after{transform:translateX(16px);}
   <div class="feedback" id="ex6-fb"></div>
 </div>
 
+<!-- EX 21 -->
+<div class="ex-card" id="ex21">
+  <div class="ex-num">Ejercicio 21</div>
+  <div class="ex-q">Formá el número "treinta y dos"</div>
+  <div class="scramble-word-bank" id="bank21"></div>
+  <div class="drag-label">Tu respuesta:</div>
+  <div class="scramble-answer" id="ans21"></div>
+  <button class="check-btn" onclick="checkScramble(21)">Verificar</button>
+  <button class="check-btn" style="background:var(--surface3);color:var(--muted);margin-left:8px" onclick="resetScramble(21)">↺ Reiniciar</button>
+  <div class="feedback" id="ex21-fb"></div>
+</div>
+
+<!-- EX 22 -->
+<div class="ex-card" id="ex22">
+  <div class="ex-num">Ejercicio 22</div>
+  <div class="ex-q">Formá el número "cuarenta y cinco"</div>
+  <div class="scramble-word-bank" id="bank22"></div>
+  <div class="drag-label">Tu respuesta:</div>
+  <div class="scramble-answer" id="ans22"></div>
+  <button class="check-btn" onclick="checkScramble(22)">Verificar</button>
+  <button class="check-btn" style="background:var(--surface3);color:var(--muted);margin-left:8px" onclick="resetScramble(22)">↺ Reiniciar</button>
+  <div class="feedback" id="ex22-fb"></div>
+</div>
+
 </div><!-- /section -->
 
 <!-- ═══════════════════════════════════════════════════════════
@@ -291,6 +385,17 @@ html.light .theme-toggle::after{transform:translateX(16px);}
     <div class="match-col" id="match7-right"></div>
   </div>
   <div class="feedback" id="ex7-fb"></div>
+</div>
+
+<!-- EX 23 -->
+<div class="ex-card" id="ex23">
+  <div class="ex-num">Ejercicio 23</div>
+  <div class="ex-q">Uní cada número con su escritura en neerlandés</div>
+  <div class="match-wrap">
+    <div class="match-col" id="match23-left"></div>
+    <div class="match-col" id="match23-right"></div>
+  </div>
+  <div class="feedback" id="ex23-fb"></div>
 </div>
 
 </div><!-- /section -->
@@ -347,6 +452,40 @@ html.light .theme-toggle::after{transform:translateX(16px);}
   <div class="feedback" id="ex9-fb"></div>
 </div>
 
+<!-- EX 24 -->
+<div class="ex-card" id="ex24">
+  <div class="ex-num">Ejercicio 24</div>
+  <div class="ex-q">Escuchá el número y seleccioná el correcto</div>
+  <button class="audio-btn" id="audioBtn24" onclick="playExAudio('negen','audioBtn24')">
+    <div class="audio-icon"><svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor"><path d="M3 2.5l9 4.5-9 4.5V2.5z"/></svg></div>
+    Escuchar
+  </button>
+  <div class="options cols2" id="ex24-opts">
+    <button class="opt" onclick="checkMC(24,'19','9')">19</button>
+    <button class="opt" onclick="checkMC(24,'9','9')">9</button>
+    <button class="opt" onclick="checkMC(24,'90','9')">90</button>
+    <button class="opt" onclick="checkMC(24,'7','9')">7</button>
+  </div>
+  <div class="feedback" id="ex24-fb"></div>
+</div>
+
+<!-- EX 25 -->
+<div class="ex-card" id="ex25">
+  <div class="ex-num">Ejercicio 25</div>
+  <div class="ex-q">Escuchá el número y seleccioná el correcto</div>
+  <button class="audio-btn" id="audioBtn25" onclick="playExAudio('zeventien','audioBtn25')">
+    <div class="audio-icon"><svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor"><path d="M3 2.5l9 4.5-9 4.5V2.5z"/></svg></div>
+    Escuchar
+  </button>
+  <div class="options cols2" id="ex25-opts">
+    <button class="opt" onclick="checkMC(25,'17','17')">17</button>
+    <button class="opt" onclick="checkMC(25,'70','17')">70</button>
+    <button class="opt" onclick="checkMC(25,'7','17')">7</button>
+    <button class="opt" onclick="checkMC(25,'77','17')">77</button>
+  </div>
+  <div class="feedback" id="ex25-fb"></div>
+</div>
+
 </div><!-- /section -->
 
 <!-- ═══════════════════════════════════════════════════════════
@@ -376,6 +515,28 @@ html.light .theme-toggle::after{transform:translateX(16px);}
   <div class="typing-hint">Pista: empieza con 'd'</div>
   <button class="check-btn" onclick="checkTyping(11,'duizend','mil = duizend')">Verificar</button>
   <div class="feedback" id="ex11-fb"></div>
+</div>
+
+<!-- EX 26 -->
+<div class="ex-card" id="ex26">
+  <div class="ex-num">Ejercicio 26</div>
+  <div class="translate-pair">
+    <div class="translate-box"><div class="translate-lang">Español</div><div class="translate-text">seis</div></div>
+    <div class="translate-box"><div class="translate-lang">Neerlandés</div><input class="typing-input" id="type26" placeholder="Escribí aquí..." autocomplete="off"></div>
+  </div>
+  <button class="check-btn" onclick="checkTyping(26,'zes','seis = zes')">Verificar</button>
+  <div class="feedback" id="ex26-fb"></div>
+</div>
+
+<!-- EX 27 -->
+<div class="ex-card" id="ex27">
+  <div class="ex-num">Ejercicio 27</div>
+  <div class="translate-pair">
+    <div class="translate-box"><div class="translate-lang">Español</div><div class="translate-text">cien</div></div>
+    <div class="translate-box"><div class="translate-lang">Neerlandés</div><input class="typing-input" id="type27" placeholder="Escribí aquí..." autocomplete="off"></div>
+  </div>
+  <button class="check-btn" onclick="checkTyping(27,'honderd','cien = honderd')">Verificar</button>
+  <div class="feedback" id="ex27-fb"></div>
 </div>
 
 </div><!-- /section -->
@@ -408,6 +569,28 @@ html.light .theme-toggle::after{transform:translateX(16px);}
   <div class="feedback" id="ex13-fb"></div>
 </div>
 
+<!-- EX 28 -->
+<div class="ex-card" id="ex28">
+  <div class="ex-num">Ejercicio 28</div>
+  <div class="ex-q">"Veertien" significa cuarenta.</div>
+  <div class="options cols2" id="ex28-opts">
+    <button class="opt" onclick="checkMC(28,'verdadero','falso')">✓ Verdadero</button>
+    <button class="opt" onclick="checkMC(28,'falso','falso')">✗ Falso</button>
+  </div>
+  <div class="feedback" id="ex28-fb"></div>
+</div>
+
+<!-- EX 29 -->
+<div class="ex-card" id="ex29">
+  <div class="ex-num">Ejercicio 29</div>
+  <div class="ex-q">El número cero se dice "nul".</div>
+  <div class="options cols2" id="ex29-opts">
+    <button class="opt" onclick="checkMC(29,'verdadero','verdadero')">✓ Verdadero</button>
+    <button class="opt" onclick="checkMC(29,'falso','verdadero')">✗ Falso</button>
+  </div>
+  <div class="feedback" id="ex29-fb"></div>
+</div>
+
 </div><!-- /section -->
 
 <!-- ═══════════════════════════════════════════════════════════
@@ -427,6 +610,32 @@ html.light .theme-toggle::after{transform:translateX(16px);}
     <button class="opt" onclick="checkMC(14,'negen','vijf')">negen (9)</button>
   </div>
   <div class="feedback" id="ex14-fb"></div>
+</div>
+
+<!-- EX 30 -->
+<div class="ex-card" id="ex30">
+  <div class="ex-num">Ejercicio 30</div>
+  <div class="ex-q">¿Cuánto es: tien min vier?</div>
+  <div class="options cols2" id="ex30-opts">
+    <button class="opt" onclick="checkMC(30,'zes','zes')">zes (6)</button>
+    <button class="opt" onclick="checkMC(30,'zeven','zes')">zeven (7)</button>
+    <button class="opt" onclick="checkMC(30,'acht','zes')">acht (8)</button>
+    <button class="opt" onclick="checkMC(30,'vijf','zes')">vijf (5)</button>
+  </div>
+  <div class="feedback" id="ex30-fb"></div>
+</div>
+
+<!-- EX 31 -->
+<div class="ex-card" id="ex31">
+  <div class="ex-num">Ejercicio 31</div>
+  <div class="ex-q">¿Cuánto es: vijf maal twee?</div>
+  <div class="options cols2" id="ex31-opts">
+    <button class="opt" onclick="checkMC(31,'zeven','tien')">zeven (7)</button>
+    <button class="opt" onclick="checkMC(31,'acht','tien')">acht (8)</button>
+    <button class="opt" onclick="checkMC(31,'tien','tien')">tien (10)</button>
+    <button class="opt" onclick="checkMC(31,'negen','tien')">negen (9)</button>
+  </div>
+  <div class="feedback" id="ex31-fb"></div>
 </div>
 
 </div><!-- /section -->
@@ -450,7 +659,7 @@ html.light .theme-toggle::after{transform:translateX(16px);}
 <!-- RESULTADOS -->
 <div class="results-box" id="resultsBox">
   <div class="results-score" id="resultsScore">0</div>
-  <div class="results-label">/ 15 ejercicios completados</div>
+  <div class="results-label">/ 32 ejercicios completados</div>
   <div class="results-msg" id="resultsMsg">¡Excelente trabajo!</div>
   <button class="results-btn" onclick="location.reload()">Volver a intentar</button>
 </div>
@@ -459,7 +668,7 @@ html.light .theme-toggle::after{transform:translateX(16px);}
 
 <script>
 // ── ESTADO GENERAL ──────────────────────────────────────────────────────────
-const TOTAL = 15;
+const TOTAL = 32;
 let solved = new Set();
 
 function markSolved(id) {
@@ -509,7 +718,9 @@ function checkMC(id, chosen, correct) {
   if (!ok) { event.target.classList.remove('disabled'); event.target.classList.add('wrong'); }
   
   const extras = {
-    12: ok ? '¡Correcto! Eerste es "primero". Tweede es "segundo".' : 'Falso. Eerste es "primero".'
+    12: ok ? '¡Correcto! Eerste es "primero". Tweede es "segundo".' : 'Falso. Eerste es "primero".',
+    28: ok ? '¡Correcto! Veertien es catorce, cuarenta es veertig.' : 'Falso. Veertien es catorce, cuarenta es veertig.',
+    29: ok ? '¡Correcto!' : 'Falso. Cero se dice nul.'
   };
   showFeedback(id, ok, extras[id] || (ok ? '¡Correcto!' : `La respuesta correcta es: ${correct}`));
   if (ok) markSolved(id);
@@ -535,7 +746,9 @@ function checkTyping(id, correct, hint) {
 
 // ── EX 6: SCRAMBLE ──────────────────────────────────────────────────────────
 const SCRAMBLES = {
-  6: { words:['een','en','twintig'], answer:'een en twintig' }
+  6: { words:['een','en','twintig'], answer:'een en twintig' },
+  21: { words:['twee','en','dertig'], answer:'twee en dertig' },
+  22: { words:['vijf','en','veertig'], answer:'vijf en veertig' }
 };
 const scrambleState = {};
 
@@ -568,6 +781,10 @@ const MATCH_DATA = {
   7: [
     {nl:'elf',es:'11'},{nl:'vijftien',es:'15'},
     {nl:'achttien',es:'18'},{nl:'dertig',es:'30'}
+  ],
+  23: [
+    {nl:'vier',es:'4'},{nl:'acht',es:'8'},
+    {nl:'veertien',es:'14'},{nl:'veertig',es:'40'}
   ]
 };
 const matchState = {};
@@ -754,7 +971,10 @@ function checkMem() {
 
 // Inicializadores
 initScramble(6);
+initScramble(21);
+initScramble(22);
 initMatch(7);
+initMatch(23);
 initDrag8();
 initMem();
 </script>
