@@ -1,0 +1,1056 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Spreek Vlaams — Dinero</title>
+  <style>
+    :root {
+      --gold: #F59E0B;
+      --gold-light: #FBBF24;
+      --bg: #0F172A;
+      --surface: #1E293B;
+      --surface2: #334155;
+      --border: rgba(255, 255, 255, 0.1);
+      --text: #F8FAFC;
+      --muted: #94A3B8;
+      --accent: #FBBF24;
+    }
+
+    html.light {
+      --gold: #D97706;
+      --gold-light: #F59E0B;
+      --bg: #F8FAFC;
+      --surface: #FFFFFF;
+      --surface2: #F1F5F9;
+      --border: rgba(0, 0, 0, 0.1);
+      --text: #0F172A;
+      --muted: #64748B;
+      --accent: #D97706;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: system-ui, -apple-system, Arial, sans-serif;
+      font-size: 17px;
+      line-height: 1.5;
+      min-height: 100vh;
+      overflow-x: hidden;
+      transition: background 0.25s, color 0.25s;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        radial-gradient(circle at 15% 85%, rgba(59, 130, 246, 0.05) 0%, transparent 55%),
+        radial-gradient(circle at 85% 15%, rgba(245, 158, 11, 0.04) 0%, transparent 55%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .container {
+      max-width: 820px;
+      margin: 0 auto;
+      padding: 0 20px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* HEADER */
+    header {
+      padding: 36px 0 28px;
+      border-bottom: 0.5px solid var(--border);
+      margin-bottom: 32px;
+    }
+
+    .header-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .header-eyebrow {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .header-eyebrow::before {
+      content: '';
+      display: inline-block;
+      width: 20px;
+      height: 1.5px;
+      background: var(--gold);
+      border-radius: 1px;
+    }
+
+    h1 {
+      font-size: clamp(28px, 5vw, 44px);
+      font-weight: 700;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      color: var(--text);
+      margin-bottom: 8px;
+    }
+
+    h1 span {
+      color: var(--gold);
+    }
+
+    .header-sub {
+      font-size: 14px;
+      color: var(--muted);
+      max-width: 480px;
+    }
+
+    /* THEME TOGGLE */
+    .theme-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+      flex-shrink: 0;
+      padding-top: 4px;
+    }
+
+    .theme-btn {
+      width: 44px;
+      height: 26px;
+      border-radius: 13px;
+      border: 1.5px solid var(--border);
+      background: var(--surface2);
+      cursor: pointer;
+      position: relative;
+      transition: background 0.25s, border-color 0.25s;
+      padding: 0;
+    }
+
+    .theme-btn::after {
+      content: '';
+      position: absolute;
+      top: 4px;
+      left: 4px;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: var(--gold);
+      transition: transform 0.25s;
+    }
+
+    html.light .theme-btn::after {
+      transform: translateX(18px);
+    }
+
+    .theme-label {
+      font-size: 10px;
+      color: var(--muted);
+      white-space: nowrap;
+      letter-spacing: 0.03em;
+    }
+
+    /* SEARCH */
+    .search-wrap {
+      position: relative;
+      margin-bottom: 24px;
+    }
+
+    .search-wrap input {
+      width: 100%;
+      background: var(--surface);
+      border: 0.5px solid var(--border);
+      border-radius: 8px;
+      padding: 13px 16px 13px 44px;
+      font-family: inherit;
+      font-size: 15px;
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.2s, background 0.25s, color 0.25s;
+      -webkit-appearance: none;
+      appearance: none;
+    }
+
+    .search-wrap input::placeholder {
+      color: var(--muted);
+    }
+
+    .search-wrap input:focus {
+      border-color: var(--gold);
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--muted);
+      pointer-events: none;
+    }
+
+    /* CATEGORÍAS */
+    .cats {
+      display: flex;
+      gap: 8px;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      margin-bottom: 28px;
+      padding-bottom: 4px;
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+
+    .cats::-webkit-scrollbar {
+      display: none;
+    }
+
+    .cat-btn {
+      padding: 7px 15px;
+      border-radius: 100px;
+      border: 0.5px solid var(--border);
+      background: transparent;
+      color: var(--muted);
+      font-family: inherit;
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.2s;
+      white-space: nowrap;
+      flex-shrink: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .cat-btn:hover {
+      border-color: var(--gold);
+      color: var(--gold-light);
+    }
+
+    .cat-btn.active {
+      background: var(--gold);
+      border-color: var(--gold);
+      color: #0D0D0D;
+      font-weight: 600;
+    }
+
+    /* SECTION */
+    .section-header {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .section-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .section-count {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    /* PHRASE CARDS */
+    .phrases-grid {
+      display: grid;
+      gap: 8px;
+      margin-bottom: 40px;
+    }
+
+    .phrase-card {
+      background: var(--surface);
+      border: 0.5px solid var(--border);
+      border-radius: 10px;
+      padding: 16px 16px 16px 18px;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 12px;
+      align-items: center;
+      cursor: pointer;
+      transition: border-color 0.15s, background 0.15s;
+      position: relative;
+      overflow: hidden;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .phrase-card::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 3px;
+      background: var(--gold);
+      opacity: 0;
+      transition: opacity 0.15s;
+      border-radius: 3px 0 0 3px;
+    }
+
+    .phrase-card:hover,
+    .phrase-card.playing {
+      border-color: var(--gold);
+      background: var(--surface2);
+    }
+
+    .phrase-card:hover::before,
+    .phrase-card.playing::before {
+      opacity: 1;
+    }
+
+    .phrase-nl {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--accent);
+      margin-bottom: 2px;
+      line-height: 1.3;
+    }
+
+    .phrase-phonetic {
+      font-size: 12px;
+      color: var(--muted);
+      font-style: italic;
+      margin-bottom: 4px;
+    }
+
+    .phrase-es {
+      font-size: 14px;
+      color: var(--text);
+      line-height: 1.4;
+    }
+
+    .phrase-tip {
+      font-size: 11px;
+      color: var(--gold);
+      margin-top: 5px;
+      font-weight: 500;
+    }
+
+    /* PLAY BUTTON */
+    .play-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 0.5px solid var(--border);
+      background: transparent;
+      color: var(--muted);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: all 0.15s;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+    }
+
+    .play-btn:hover {
+      border-color: var(--gold);
+      color: var(--gold);
+    }
+
+    .play-btn.active {
+      background: var(--gold);
+      border-color: var(--gold);
+      color: #0D0D0D;
+    }
+
+    /* EMPTY */
+    .empty {
+      text-align: center;
+      padding: 48px 20px;
+      color: var(--muted);
+    }
+
+    /* TOAST */
+    .toast {
+      position: fixed;
+      bottom: 28px;
+      left: 50%;
+      transform: translateX(-50%) translateY(16px);
+      background: var(--surface);
+      border: 0.5px solid var(--border);
+      color: var(--text);
+      padding: 10px 20px;
+      border-radius: 100px;
+      font-size: 13px;
+      font-weight: 500;
+      opacity: 0;
+      transition: all 0.25s;
+      pointer-events: none;
+      z-index: 100;
+      white-space: nowrap;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+      max-width: calc(100vw - 40px);
+      text-align: center;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* FOOTER */
+    footer {
+      border-top: 0.5px solid var(--border);
+      padding: 20px 0 40px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 12px;
+      letter-spacing: 0.04em;
+    }
+
+    footer span {
+      color: var(--gold);
+    }
+
+    /* ANIMACIÓN */
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(8px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .phrase-card {
+      animation: fadeUp 0.25s ease both;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 600px) {
+      header {
+        padding: 24px 0 20px;
+        margin-bottom: 24px;
+      }
+
+      h1 {
+        font-size: 28px;
+      }
+
+      .header-sub {
+        font-size: 13px;
+      }
+
+      .theme-label {
+        display: none;
+      }
+
+      .search-wrap {
+        margin-bottom: 18px;
+      }
+
+      .search-wrap input {
+        font-size: 16px;
+        padding: 12px 14px 12px 40px;
+      }
+
+      .cats {
+        margin-bottom: 20px;
+      }
+
+      .cat-btn {
+        font-size: 12px;
+        padding: 6px 12px;
+      }
+
+      .phrase-card {
+        padding: 14px 12px 14px 15px;
+        gap: 10px;
+      }
+
+      .phrase-nl {
+        font-size: 15px;
+      }
+
+      .phrase-es {
+        font-size: 13px;
+      }
+
+      .play-btn {
+        width: 36px;
+        height: 36px;
+      }
+
+      .toast {
+        font-size: 12px;
+        padding: 9px 16px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+
+    <nav
+      style="display:flex;align-items:center;justify-content:space-between;padding:18px 0;border-bottom:0.5px solid var(--border);margin-bottom:32px;">
+      <a href="../index.html"
+        style="display:flex;align-items:center;gap:8px;text-decoration:none;color:var(--muted);font-size:13px;font-weight:500;transition:color 0.2s;"
+        onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--muted)'">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+            stroke-linejoin="round" />
+        </svg>
+        Inicio
+      </a>
+      <span
+        style="font-size:11px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold)">Dinero</span>
+      <a href="ejercicios.html"
+        style="display:flex;align-items:center;gap:6px;text-decoration:none;background:var(--gold);color:#0F172A;font-size:12px;font-weight:700;padding:7px 14px;border-radius:100px;transition:opacity 0.2s;"
+        onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">
+        🎮 Ejercicios →
+      </a>
+    </nav>
+
+    <header>
+      <div class="header-top">
+        <div>
+          <div class="header-eyebrow">Flandes · Bélgica</div>
+          <h1>Los <span>Dinero</span></h1>
+          <p class="header-sub">Precios, pagos, bancos y vocabulario sobre el dinero en neerlandés flamenco</p>
+        </div>
+        <div class="theme-wrap">
+          <button class="theme-btn" id="themeBtn" title="Cambiar tema" onclick="toggleTheme()"></button>
+          <span class="theme-label" id="themeLabel">Tema claro</span>
+        </div>
+      </div>
+    </header>
+
+    <div class="search-wrap">
+      <svg class="search-icon" width="16" height="16" viewBox="0 0 16 16" fill="none">
+        <circle cx="6.5" cy="6.5" r="5" stroke="currentColor" stroke-width="1.3" />
+        <path d="M10.5 10.5L14 14" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" />
+      </svg>
+      <input type="text" id="search" placeholder="Buscar vocabulario..." autocomplete="off" spellcheck="false">
+    </div>
+
+    <div class="cats" id="cats"></div>
+    <div id="main-content"></div>
+
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <footer>
+    <p>Spreek Vlaams · Hecho con <span>♥</span> para aprender flamenco</p>
+  </footer>
+
+  <script>
+    // ── DATOS ──────────────────────────────────────────────────────────────────
+    const PHRASES = [
+    {
+        "id": 1,
+        "cat": "Monedas y Billetes",
+        "nl": "het geld",
+        "phonetic": "jet jelt",
+        "es": "el dinero",
+        "tip": "La 'g' suena como una 'j' fuerte."
+    },
+    {
+        "id": 2,
+        "cat": "Monedas y Billetes",
+        "nl": "de euro",
+        "phonetic": "de eu-ro",
+        "es": "el euro"
+    },
+    {
+        "id": 3,
+        "cat": "Monedas y Billetes",
+        "nl": "de cent",
+        "phonetic": "de sent",
+        "es": "el c\u00e9ntimo"
+    },
+    {
+        "id": 4,
+        "cat": "Monedas y Billetes",
+        "nl": "het muntstuk",
+        "phonetic": "jet munt-st\u00fck",
+        "es": "la moneda"
+    },
+    {
+        "id": 5,
+        "cat": "Monedas y Billetes",
+        "nl": "het briefje",
+        "phonetic": "jet brif-ye",
+        "es": "el billete"
+    },
+    {
+        "id": 6,
+        "cat": "Monedas y Billetes",
+        "nl": "kleingeld",
+        "phonetic": "klein-jelt",
+        "es": "cambio / suelto"
+    },
+    {
+        "id": 7,
+        "cat": "Monedas y Billetes",
+        "nl": "cash",
+        "phonetic": "cash",
+        "es": "efectivo"
+    },
+    {
+        "id": 8,
+        "cat": "Monedas y Billetes",
+        "nl": "de bankkaart",
+        "phonetic": "de bank-kart",
+        "es": "la tarjeta bancaria"
+    },
+    {
+        "id": 9,
+        "cat": "Precios y Pagos",
+        "nl": "hoeveel kost dit?",
+        "phonetic": "ju-vel kost dit?",
+        "es": "\u00bfcu\u00e1nto cuesta esto?"
+    },
+    {
+        "id": 10,
+        "cat": "Precios y Pagos",
+        "nl": "de prijs",
+        "phonetic": "de preys",
+        "es": "el precio"
+    },
+    {
+        "id": 11,
+        "cat": "Precios y Pagos",
+        "nl": "goedkoop",
+        "phonetic": "jut-kop",
+        "es": "barato"
+    },
+    {
+        "id": 12,
+        "cat": "Precios y Pagos",
+        "nl": "duur",
+        "phonetic": "d\u00fcr",
+        "es": "caro"
+    },
+    {
+        "id": 13,
+        "cat": "Precios y Pagos",
+        "nl": "betalen",
+        "phonetic": "be-ta-len",
+        "es": "pagar"
+    },
+    {
+        "id": 14,
+        "cat": "Precios y Pagos",
+        "nl": "mag ik betalen?",
+        "phonetic": "maj ik be-ta-len?",
+        "es": "\u00bfpuedo pagar?"
+    },
+    {
+        "id": 15,
+        "cat": "Precios y Pagos",
+        "nl": "de rekening",
+        "phonetic": "de re-ke-ning",
+        "es": "la cuenta"
+    },
+    {
+        "id": 16,
+        "cat": "Precios y Pagos",
+        "nl": "het bonnetje",
+        "phonetic": "jet bo-ne-tje",
+        "es": "el recibo"
+    },
+    {
+        "id": 17,
+        "cat": "En el Banco",
+        "nl": "de bank",
+        "phonetic": "de bank",
+        "es": "el banco"
+    },
+    {
+        "id": 18,
+        "cat": "En el Banco",
+        "nl": "de rekening",
+        "phonetic": "de re-ke-ning",
+        "es": "la cuenta bancaria"
+    },
+    {
+        "id": 19,
+        "cat": "En el Banco",
+        "nl": "geld afhalen",
+        "phonetic": "jelt af-ja-len",
+        "es": "retirar dinero"
+    },
+    {
+        "id": 20,
+        "cat": "En el Banco",
+        "nl": "de geldautomaat",
+        "phonetic": "de jelt-au-to-mat",
+        "es": "el cajero autom\u00e1tico"
+    },
+    {
+        "id": 21,
+        "cat": "En el Banco",
+        "nl": "overschrijven",
+        "phonetic": "o-ver-sjrey-ven",
+        "es": "transferir"
+    },
+    {
+        "id": 22,
+        "cat": "En el Banco",
+        "nl": "sparen",
+        "phonetic": "spa-ren",
+        "es": "ahorrar"
+    },
+    {
+        "id": 23,
+        "cat": "En el Banco",
+        "nl": "de lening",
+        "phonetic": "de le-ning",
+        "es": "el pr\u00e9stamo"
+    },
+    {
+        "id": 24,
+        "cat": "En el Banco",
+        "nl": "de rente",
+        "phonetic": "de ren-te",
+        "es": "el inter\u00e9s"
+    },
+    {
+        "id": 25,
+        "cat": "Compras",
+        "nl": "de korting",
+        "phonetic": "de kor-ting",
+        "es": "el descuento"
+    },
+    {
+        "id": 26,
+        "cat": "Compras",
+        "nl": "in de aanbieding",
+        "phonetic": "in de an-bi-ding",
+        "es": "en oferta"
+    },
+    {
+        "id": 27,
+        "cat": "Compras",
+        "nl": "de kassa",
+        "phonetic": "de ka-sa",
+        "es": "la caja"
+    },
+    {
+        "id": 28,
+        "cat": "Compras",
+        "nl": "wisselgeld",
+        "phonetic": "wi-sel-jelt",
+        "es": "cambio (vuelto)"
+    },
+    {
+        "id": 29,
+        "cat": "Compras",
+        "nl": "kopen",
+        "phonetic": "ko-pen",
+        "es": "comprar"
+    },
+    {
+        "id": 30,
+        "cat": "Compras",
+        "nl": "verkopen",
+        "phonetic": "ver-ko-pen",
+        "es": "vender"
+    },
+    {
+        "id": 31,
+        "cat": "Compras",
+        "nl": "gratis",
+        "phonetic": "jra-tis",
+        "es": "gratis"
+    },
+    {
+        "id": 32,
+        "cat": "Compras",
+        "nl": "uitverkocht",
+        "phonetic": "\u00fcit-ver-kojt",
+        "es": "agotado"
+    },
+    {
+        "id": 33,
+        "cat": "Expresiones Comunes",
+        "nl": "ik heb geen geld",
+        "phonetic": "ik jep jen jelt",
+        "es": "no tengo dinero"
+    },
+    {
+        "id": 34,
+        "cat": "Expresiones Comunes",
+        "nl": "dat is te duur",
+        "phonetic": "dat is te d\u00fcr",
+        "es": "eso es demasiado caro"
+    },
+    {
+        "id": 35,
+        "cat": "Expresiones Comunes",
+        "nl": "kan ik met de kaart betalen?",
+        "phonetic": "kan ik met de kart be-ta-len?",
+        "es": "\u00bfpuedo pagar con tarjeta?"
+    },
+    {
+        "id": 36,
+        "cat": "Expresiones Comunes",
+        "nl": "ik betaal cash",
+        "phonetic": "ik be-tal cash",
+        "es": "pago en efectivo"
+    },
+    {
+        "id": 37,
+        "cat": "Expresiones Comunes",
+        "nl": "hou het wisselgeld maar",
+        "phonetic": "jau jet wi-sel-jelt mar",
+        "es": "qu\u00e9dese con el cambio"
+    },
+    {
+        "id": 38,
+        "cat": "Expresiones Comunes",
+        "nl": "geld verdienen",
+        "phonetic": "jelt ver-di-nen",
+        "es": "ganar dinero"
+    },
+    {
+        "id": 39,
+        "cat": "Expresiones Comunes",
+        "nl": "geld uitgeven",
+        "phonetic": "jelt \u00fcit-je-ven",
+        "es": "gastar dinero"
+    },
+    {
+        "id": 40,
+        "cat": "Expresiones Comunes",
+        "nl": "ik ben blut",
+        "phonetic": "ik ben bl\u00fct",
+        "es": "estoy sin un duro / pelado"
+    }
+];
+
+    const CATS = ["Todos", ...new Set(PHRASES.map(p => p.cat))];
+    let activeCat = "Todos";
+    let searchTerm = "";
+    let currentAudio = null;
+    let currentId = null;
+
+    // ── AUDIO: sistema híbrido móvil-primero ────────────────────────────────────
+    const isMobile = /Android|iPhone|iPad/i.test(navigator.userAgent);
+
+    let voices = [];
+    function loadVoices() {
+      voices = window.speechSynthesis ? speechSynthesis.getVoices() : [];
+    }
+    if (window.speechSynthesis) {
+      loadVoices();
+      speechSynthesis.onvoiceschanged = loadVoices;
+    }
+
+    function getBestVoice() {
+      if (!voices.length) loadVoices();
+      return voices.find(v => v.lang === 'nl-BE')
+        || voices.find(v => v.lang === 'nl-NL')
+        || voices.find(v => v.lang.startsWith('nl'))
+        || voices[0]
+        || null;
+    }
+
+    function speakWithSpeechAPI(text, id) {
+      speechSynthesis.cancel();
+      const utter = new SpeechSynthesisUtterance(text);
+      const voice = getBestVoice();
+      if (voice) { utter.voice = voice; utter.lang = voice.lang; }
+      else { utter.lang = 'nl-BE'; }
+      utter.rate = 0.85;
+      utter.pitch = 1;
+
+      utter.onstart = () => setPlaying(id, true);
+      utter.onend = () => { setPlaying(id, false); currentId = null; };
+      utter.onerror = (e) => {
+        if (e.error === 'interrupted') return;
+        setPlaying(id, false);
+        currentId = null;
+        speakWithGoogleTTS(text, id);
+      };
+
+      setPlaying(id, true);
+      currentId = id;
+      speechSynthesis.speak(utter);
+    }
+
+    function speakWithGoogleTTS(text, id) {
+      const url = `https://translate.google.com/translate_tts?ie=UTF-8&q=${encodeURIComponent(text)}&tl=nl&client=tw-ob`;
+
+      fetch(url)
+        .then(r => r.blob())
+        .then(blob => {
+          const blobUrl = URL.createObjectURL(blob);
+          const audio = new Audio(blobUrl);
+          currentAudio = audio;
+          audio.onended = () => {
+            setPlaying(id, false);
+            currentAudio = null;
+            currentId = null;
+            URL.revokeObjectURL(blobUrl);
+          };
+          audio.onerror = () => {
+            setPlaying(id, false);
+            currentAudio = null;
+            currentId = null;
+            showToast("No se pudo cargar el audio. Verificá tu conexión.");
+          };
+          return audio.play();
+        })
+        .catch(() => {
+          setPlaying(id, false);
+          currentId = null;
+          showToast("No se pudo reproducir el audio.");
+        });
+    }
+
+    function speak(id) {
+      const phrase = PHRASES.find(p => p.id === id);
+      if (!phrase) return;
+
+      if (currentId === id) {
+        stopAudio();
+        return;
+      }
+
+      stopAudio();
+      currentId = id;
+      setPlaying(id, true);
+
+      if (isMobile && window.speechSynthesis) {
+        speakWithSpeechAPI(phrase.nl, id);
+      } else if (window.speechSynthesis && voices.length > 0) {
+        speakWithSpeechAPI(phrase.nl, id);
+      } else {
+        speakWithGoogleTTS(phrase.nl, id);
+      }
+    }
+
+    function stopAudio() {
+      if (window.speechSynthesis) speechSynthesis.cancel();
+      if (currentAudio) { currentAudio.pause(); currentAudio = null; }
+      if (currentId !== null) { setPlaying(currentId, false); currentId = null; }
+    }
+
+    const ICON_PLAY = `<svg width="13" height="13" viewBox="0 0 14 14" fill="currentColor"><path d="M3 2.5l9 4.5-9 4.5V2.5z"/></svg>`;
+    const ICON_STOP = `<svg width="13" height="13" viewBox="0 0 14 14" fill="currentColor"><rect x="2" y="2" width="4" height="10" rx="1"/><rect x="8" y="2" width="4" height="10" rx="1"/></svg>`;
+
+    function setPlaying(id, on) {
+      const btn = document.getElementById(`btn-${id}`);
+      const card = document.getElementById(`card-${id}`);
+      if (btn) { btn.classList.toggle('active', on); btn.innerHTML = on ? ICON_STOP : ICON_PLAY; }
+      if (card) card.classList.toggle('playing', on);
+    }
+
+    // ── TEMA ──────────────────────────────────────────────────────────────────
+    function toggleTheme() {
+      const isLight = document.documentElement.classList.toggle('light');
+      document.getElementById('themeLabel').textContent = isLight ? 'Tema oscuro' : 'Tema claro';
+    }
+
+    // ── UI ────────────────────────────────────────────────────────────────────
+    function showToast(msg) {
+      const t = document.getElementById("toast");
+      t.textContent = msg;
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 3200);
+    }
+
+    function renderCats() {
+      document.getElementById("cats").innerHTML = CATS.map(c =>
+        `<button class="cat-btn ${c === activeCat ? 'active' : ''}" onclick="setCategory('${c}')">${c}</button>`
+      ).join('');
+    }
+
+    function setCategory(cat) {
+      activeCat = cat;
+      stopAudio();
+      renderCats();
+      renderPhrases();
+    }
+
+    function getFiltered() {
+      return PHRASES.filter(p => {
+        const matchCat = activeCat === "Todos" || p.cat === activeCat;
+        const q = searchTerm.toLowerCase();
+        const matchSearch = !q || p.nl.toLowerCase().includes(q) || p.es.toLowerCase().includes(q);
+        return matchCat && matchSearch;
+      });
+    }
+
+    function groupBy(arr, key) {
+      return arr.reduce((acc, item) => {
+        (acc[item[key]] = acc[item[key]] || []).push(item);
+        return acc;
+      }, {});
+    }
+
+    function renderPhrases() {
+      const filtered = getFiltered();
+      const content = document.getElementById("main-content");
+
+      if (!filtered.length) {
+        content.innerHTML = '<div class="empty">No se encontró vocabulario sobre dinero. Probá con otra búsqueda.</div>';
+        return;
+      }
+
+      const grouped = activeCat === "Todos"
+        ? groupBy(filtered, "cat")
+        : { [activeCat]: filtered };
+
+      let html = '';
+      Object.entries(grouped).forEach(([cat, phrases]) => {
+        html += `<div class="section-header">
+      <span class="section-title">${cat}</span>
+      <span class="section-count">${phrases.length} ítem${phrases.length !== 1 ? 's' : ''}</span>
+    </div><div class="phrases-grid">`;
+
+        phrases.forEach((p, i) => {
+          html += `
+      <div class="phrase-card" id="card-${p.id}" onclick="speak(${p.id})" style="animation-delay:${i * 0.03}s">
+        <div>
+          <div class="phrase-nl">${p.nl}</div>
+          <div class="phrase-phonetic">${p.phonetic}</div>
+          <div class="phrase-es">${p.es}</div>
+          ${p.tip ? `<div class="phrase-tip">→ ${p.tip}</div>` : ''}
+        </div>
+        <button class="play-btn" id="btn-${p.id}"
+          onclick="speak(${p.id}); event.stopPropagation();"
+          title="Escuchar pronunciación">${ICON_PLAY}</button>
+      </div>`;
+        });
+        html += '</div>';
+      });
+
+      content.innerHTML = html;
+    }
+
+    document.getElementById("search").addEventListener("input", e => {
+      searchTerm = e.target.value;
+      stopAudio();
+      renderPhrases();
+    });
+
+    renderCats();
+    renderPhrases();
+  </script>
+</body>
+
+</html>
